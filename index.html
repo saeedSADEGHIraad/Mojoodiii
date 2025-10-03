@@ -9,6 +9,8 @@
 <link rel="icon" href="favicon.ico">
 <style>
 :root{--bg:#0f1115;--card:#121621;--muted:#9aa4b2;--text:#e7ecf3;--brand:#D4AF37;--brand-2:#b99728;--danger:#ef4444;--ring:0 0 0 3px rgba(212,175,55,.35);--radius:16px}
+/* UI tokens */
+:root{--space-1:6px;--space-2:12px;--transition-fast:120ms;--transition-med:280ms;--btn-elev:0 8px 20px rgba(0,0,0,.25)}
 *{box-sizing:border-box;margin:0;padding:0}body{font-family:Vazirmatn,IRANSans,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:linear-gradient(180deg,#0c0e12,#0f1115);color:var(--text);line-height:1.75;padding-bottom:110px}
 .appbar{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,rgba(14,16,22,.8),rgba(14,16,22,.6));backdrop-filter:blur(10px);border-bottom:1px solid rgba(212,175,55,.18)}
 .appbar-inner{max-width:920px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
@@ -19,8 +21,9 @@
 .row{display:flex;flex-wrap:wrap;gap:10px}.col{flex:1 1 220px}
 .select-wrap{position:relative}
 .select,.input{width:100%;padding:12px 14px;border-radius:12px;background:#0b0e14;color:var(--text);border:1px solid rgba(255,255,255,.12)}
+.select-wrap .select{padding-inline-start:14px;padding-inline-end:72px} /* room for inline actions */
 .input:focus,.select:focus{outline:none;border-color:var(--brand);box-shadow:var(--ring)}
-.inline-actions{position:absolute;inset-inline-start:8px;top:50%;transform:translateY(-50%);display:flex;gap:6px}
+.inline-actions{position:absolute;inset-inline-end:8px;top:50%;transform:translateY(-50%);display:flex;gap:6px} /* place actions on start or end depending on dir */
 .i-btn{border:none;border-radius:8px;padding:6px 8px;cursor:pointer;background:rgba(255,255,255,.06);color:var(--text);border:1px solid rgba(255,255,255,.12);font-size:.85rem}
 .i-btn.primary{background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#232211;border:none;font-weight:800}
 .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,.14);color:var(--text)}.btn-sm{padding:8px 10px;font-size:.92rem}
@@ -42,6 +45,8 @@
 
 /* v13.6 date card */
 .date-card{background:linear-gradient(135deg,#1c1f27,#121621);border:1px solid rgba(212,175,55,.35)!important;border-radius:18px;box-shadow:0 6px 24px rgba(0,0,0,.35)}
+.date-card{transition:transform var(--transition-med) cubic-bezier(.2,.9,.3,1),opacity var(--transition-med) ease,max-height var(--transition-med) ease;transform-origin:top center}
+.date-card.hidden{opacity:0;transform:translateY(-8px) scale(.995);pointer-events:none;max-height:0;overflow:hidden}
 .date-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
 .date-title{display:flex;align-items:center;gap:10px;font-weight:800;color:var(--brand)}
 .date-title .emoji{font-size:1.2rem}
@@ -50,16 +55,25 @@
 .date-actions{display:flex;gap:8px;justify-content:center;margin-top:10px}
 .i-btn.success{background:linear-gradient(135deg,#22c55e,#16a34a);color:#0d1b10;border:none;font-weight:800}
 .i-btn.danger{background:linear-gradient(135deg,#ef4444,#dc2626);color:#230b0b;border:none;font-weight:800}
+.i-btn{transition:transform var(--transition-fast) ease,box-shadow var(--transition-fast) ease}
+.i-btn:hover{transform:translateY(-3px);box-shadow:var(--btn-elev)}
+.i-btn:active{transform:translateY(0)}
 .calendar{margin-top:10px;border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:10px;background:#0e121a}
 .cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
 .cal-head .nav{display:flex;gap:6px}
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
-.cal-cell{padding:8px 0;border-radius:10px;text-align:center;background:#0b0e14;border:1px solid rgba(255,255,255,.08);cursor:pointer}
+.cal-cell{padding:10px 0;min-height:44px;border-radius:10px;text-align:center;background:#0b0e14;border:1px solid rgba(255,255,255,.08);cursor:pointer}
 .cal-cell.muted{opacity:.5}
 .cal-cell.today{outline:2px solid var(--brand);}
 .cal-cell.selected{background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#232211;border:none}
 .old-selects{display:none}
 .date-preview{margin-top:10px;display:flex;gap:8px;align-items:center;color:#e7ecf3;font-weight:700}
+.badge{padding:6px 10px;font-weight:700;box-shadow:0 4px 12px rgba(0,0,0,.35)}
+
+/* appbar date chip */
+#date-chip{display:none;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:rgba(212,175,55,.08);color:var(--brand);border:1px solid rgba(212,175,55,.18);cursor:pointer;font-weight:700}
+#open-date-btn svg{margin-inline-start:6px;opacity:.95;transform:translateY(1px)}
+@media(max-width:480px){.cal-cell{padding:12px 0;min-height:48px}}
 </style>
 <script>
   // Inject manifest only on http(s) to avoid CORS on file://
@@ -79,9 +93,13 @@
       <div class="logo" aria-hidden="true"></div>
       <div><div style="font-weight:800">گنجینه</div><div style="color:#9aa4b2;font-size:.86rem">مدیریت موجودی طلافروشی</div></div>
     </div>
-    <div style="display:flex;gap:8px">
+    <div style="display:flex;gap:8px;align-items:center">
       <button class="btn-ghost btn-sm" id="print-btn">چاپ</button>
-      <button class="btn-ghost btn-sm" id="open-date-btn" title="نمایش/تغییر تاریخ">تاریخ</button>
+      <button class="btn-ghost btn-sm" id="open-date-btn" title="نمایش/تغییر تاریخ">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M7 11h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.4"/></svg>
+        تاریخ
+      </button>
+      <div id="date-chip" title="تاریخ ثبت‌شده"></div>
       <button class="btn-ghost btn-sm" id="theme-toggle">حالت روشن/تاریک</button>
     </div>
   </div>
@@ -251,7 +269,10 @@ document.getElementById('print-btn').addEventListener('click',()=>window.print()
 // Open date form from appbar (allows reopening during same session)
 const openDateBtn = document.getElementById('open-date-btn');
 const dateCardEl = document.querySelector('.date-card');
-if(openDateBtn){ openDateBtn.addEventListener('click',()=>{ if(dateCardEl) dateCardEl.style.display='block'; showSetup(); const inp=document.getElementById('jalali-date'); if(inp){ inp.focus(); inp.select(); } }); }
+const dateChip = document.getElementById('date-chip');
+function showDateCard(){ if(dateCardEl){ dateCardEl.classList.remove('hidden'); dateCardEl.style.removeProperty('display'); } }
+function hideDateCard(){ if(dateCardEl){ dateCardEl.classList.add('hidden'); /* keep display removed to allow layout */ } }
+if(openDateBtn){ openDateBtn.addEventListener('click',()=>{ showDateCard(); showSetup(); const inp=document.getElementById('jalali-date'); if(inp){ inp.focus(); inp.select(); } }); }
 
 // Jalali conversion + date helpers
 function g2j(gy, gm, gd){const g_d_m=[0,31,59,90,120,151,181,212,243,273,304,334];let gy2=(gm>2)?(gy+1):gy;let days=355666+(365*gy)+Math.floor((gy2+3)/4)-Math.floor((gy2+99)/100)+Math.floor((gy2+399)/400)+gd+g_d_m[gm-1];let jy=-1595+33*Math.floor(days/12053);days%=12053;jy+=4*Math.floor(days/1461);days%=1461;if(days>365){jy+=Math.floor((days-1)/365);days=(days-1)%365;}let jm=(days<186)?1+Math.floor(days/31):7+Math.floor((days-186)/30);let jd=1+((days<186)?(days%31):((days-186)%30));return {jy,jm,jd};}
@@ -321,6 +342,9 @@ function applyDate(iso){
   if (dateBadge) dateBadge.textContent = j;
   const prev=document.getElementById('date-preview'); const wt=document.getElementById('weekday-badge'); const pt=document.getElementById('preview-text');
   if(prev){ prev.style.display='flex'; wt.textContent=weekdayFaFromISO(iso); pt.textContent=isoToJalali(iso)+' ('+iso+')'; }
+  // show chip in appbar
+  if(dateChip){ dateChip.textContent = isoToJalali(iso); dateChip.style.display='inline-flex'; }
+  hideDateCard();
   showToast('تاریخ ثبت شد');
 }
 function showSetup(){ if(dateSetup) dateSetup.style.display='flex'; if(dateFixed) dateFixed.style.display='none'; }
@@ -346,9 +370,11 @@ function initDate(){
       if(dateBadge){ dateBadge.textContent = `${jy}-${String(jm).padStart(2,'0')}-${String(jd).padStart(2,'0')}`; }
       if(dateFixed) dateFixed.style.display = 'none'; if(dateSetup) dateSetup.style.display='none';
       const prev=document.getElementById('date-preview'); if(prev){ prev.style.display='none'; }
+      hideDateCard();
     }
   } else {
     if(savedISO){ applyDate(savedISO); } else { if(dateBadge){ dateBadge.textContent = `${jy}-${String(jm).padStart(2,'0')}-${String(jd).padStart(2,'0')}`; } }
+    showDateCard();
   }
 }
 
@@ -360,7 +386,7 @@ document.getElementById('btn-today').addEventListener('click',()=>{
   calState={jy,jm,jd,selected:{jy,jm,jd}}; renderCalendar();
   document.getElementById('jalali-date').value = formatJalali(jy,jm,jd).replace(/-/g,'/');
 });
-document.getElementById('btn-clear-date').addEventListener('click',()=>{ localStorage.removeItem('currentDate'); sessionStorage.removeItem('dateConfirmed'); currentDate=null; if(dateCardEl) dateCardEl.style.display='block'; showSetup(); showToast('تاریخ پاک شد'); });
+document.getElementById('btn-clear-date').addEventListener('click',()=>{ localStorage.removeItem('currentDate'); sessionStorage.removeItem('dateConfirmed'); currentDate=null; if(dateChip){ dateChip.style.display='none'; dateChip.textContent=''; } showDateCard(); showSetup(); showToast('تاریخ پاک شد'); });
 
 document.getElementById('cal-prev').addEventListener('click',()=>{ calState.jm--; if(calState.jm<1){calState.jm=12; calState.jy--;} renderCalendar(); });
 document.getElementById('cal-next').addEventListener('click',()=>{ calState.jm++; if(calState.jm>12){calState.jm=1; calState.jy++;} renderCalendar(); });
@@ -376,7 +402,7 @@ document.getElementById('change-date').addEventListener('click',showSetup);
 
 // When user confirms date, set a session flag so the form stays hidden for this session
 document.getElementById('confirm-date').addEventListener('click',()=>{
-  try{ sessionStorage.setItem('dateConfirmed', '1'); if(dateCardEl) dateCardEl.style.display='none'; }catch(e){}
+  try{ sessionStorage.setItem('dateConfirmed', '1'); hideDateCard(); }catch(e){}
 });
 
 // Populate dropdowns for other tabs
