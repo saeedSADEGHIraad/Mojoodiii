@@ -297,7 +297,18 @@ const currentDateJ=document.getElementById('current-date-jalali');
 const currentDateG=document.getElementById('current-date-greg');
 const dateBadge=document.getElementById('date-badge');
 
-function save(){ localStorage.setItem('inventory',JSON.stringify(inventory)); }
+function save(){
+  try{
+    const prev=localStorage.getItem('inventory');
+    if(prev!==null){
+      localStorage.setItem('inventory_backup', prev);
+    }
+    localStorage.setItem('inventory',JSON.stringify(inventory));
+  }catch(err){
+    console.error('خطا در ذخیره‌سازی اطلاعات', err);
+    showToast('ذخیره‌سازی اطلاعات با خطا مواجه شد');
+  }
+}
 function load(){ const s=localStorage.getItem('inventory'); if(s){ try{ inventory={...inventory,...JSON.parse(s)} }catch{} } }
 
 function isJLeap(jy){const g=j2g(jy,12,30);const back=g2j(g.gy,g.gm,g.gd);return back.jd===30&&back.jm===12;}
@@ -569,9 +580,6 @@ document.getElementById('import-file').addEventListener('change',async (e)=>{
 });
 document.getElementById('btn-undo').onclick=()=>{ const s=localStorage.getItem('inventory_backup'); if(!s) return alert('پشتیبان موجود نیست'); inventory=JSON.parse(s); save(); populate(); renderGold(); renderCoin(); renderBank(); renderDaily(); showToast('بازگردانی شد'); };
 document.getElementById('btn-help').onclick=()=>alert('راهنما: تاریخ شمسی را از ورودی یا تقویم انتخاب کنید؛ سپس تأیید تاریخ را بزنید. در هر تب، دکمه‌های افزودن/حذف گزینه‌ها داخل همان کشویی قرار گرفته‌اند. در تب بانک می‌توانید تا ۳ عکس پیوست کنید.');
-
-// Backup hook
-const _save=save; save=function(){ localStorage.setItem('inventory_backup', JSON.stringify(inventory)); _save(); };
 
 // SW guard for file://
 const IS_HTTP = location.protocol.startsWith('http');
