@@ -1,0 +1,23 @@
+{
+  "name": "گنجینه – مدیریت موجودی طلافروشی",
+  "short_name": "گنجینه",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "theme_color": "#D4AF37",
+  "background_color": "#0f1115",
+  "dir": "rtl",
+  "lang": "fa",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

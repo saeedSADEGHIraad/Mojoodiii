@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>گنجینه – مدیریت موجودی طلافروشی</title>
+<meta name="theme-color" content="#D4AF37">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="icon" href="favicon.ico">
+<style>
+:root{--bg:#0f1115;--card:#121621;--muted:#9aa4b2;--text:#e7ecf3;--brand:#D4AF37;--brand-2:#b99728;--danger:#ef4444;--ring:0 0 0 3px rgba(212,175,55,.35);--radius:16px}
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:Vazirmatn,IRANSans,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:linear-gradient(180deg,#0c0e12,#0f1115);color:var(--text);line-height:1.75;padding-bottom:110px}
+.appbar{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,rgba(14,16,22,.8),rgba(14,16,22,.6));backdrop-filter:blur(10px);border-bottom:1px solid rgba(212,175,55,.18)}
+.appbar-inner{max-width:920px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.logo{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--brand),var(--brand-2));box-shadow:0 6px 24px rgba(212,175,55,.25)}
+.container{max-width:920px;margin:0 auto;padding:16px}
+.grid{display:grid;grid-template-columns:1fr;gap:16px}@media(min-width:980px){.grid{grid-template-columns:1fr 1fr}}
+.card{background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.01)),var(--card);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:18px}
+.row{display:flex;flex-wrap:wrap;gap:10px}.col{flex:1 1 220px}
+.select-wrap{position:relative}
+.select,.input{width:100%;padding:12px 14px;border-radius:12px;background:#0b0e14;color:var(--text);border:1px solid rgba(255,255,255,.12)}
+.input:focus,.select:focus{outline:none;border-color:var(--brand);box-shadow:var(--ring)}
+.inline-actions{position:absolute;inset-inline-start:8px;top:50%;transform:translateY(-50%);display:flex;gap:6px}
+.i-btn{border:none;border-radius:8px;padding:6px 8px;cursor:pointer;background:rgba(255,255,255,.06);color:var(--text);border:1px solid rgba(255,255,255,.12);font-size:.85rem}
+.i-btn.primary{background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#232211;border:none;font-weight:800}
+.btn-ghost{background:transparent;border:1px solid rgba(255,255,255,.14);color:var(--text)}.btn-sm{padding:8px 10px;font-size:.92rem}
+.pill{display:inline-flex;gap:6px;align-items:center;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12)}
+.list{display:flex;flex-direction:column;gap:10px;margin-top:10px}
+.item{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;background:#0d1018;border:1px solid rgba(255,255,255,.08);padding:12px;border-radius:12px}
+.tabs{position:fixed;bottom:10px;left:0;right:0;display:flex;justify-content:center;pointer-events:none}
+.tabs-inner{pointer-events:auto;display:flex;gap:6px;background:rgba(10,12,18,.7);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.12);padding:8px;border-radius:14px;margin:0 auto}
+.tab{background:transparent;color:#9aa4b2;border:none;border-radius:10px;padding:10px 12px;cursor:pointer}.tab.active{background:rgba(212,175,55,.12);color:var(--brand);font-weight:800}
+.toast{position:fixed;top:80px;right:16px;background:#0e121b;border:1px solid rgba(255,255,255,.12);color:#fff;padding:12px 14px;border-radius:12px;opacity:0;transform:translateY(-10px);transition:all .2s ease;z-index:60}
+.toast.show{opacity:1;transform:translateY(0)}
+.thumb{width:62px;height:62px;border-radius:10px;object-fit:cover;border:1px solid rgba(255,255,255,.12)}
+.thumb-wrap{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.viewer{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:80}
+.viewer img{max-width:92vw;max-height:92vh;border-radius:12px;box-shadow:0 20px 70px rgba(0,0,0,.6)}
+.viewer.show{display:flex}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border-radius:12px;background:rgba(212,175,55,.12);color:var(--brand);border:1px solid rgba(212,175,55,.25);font-size:.85rem}
+.help-note{color:#9aa4b2;font-size:.9rem;margin-top:6px}
+
+/* v13.6 date card */
+.date-card{background:linear-gradient(135deg,#1c1f27,#121621);border:1px solid rgba(212,175,55,.35)!important;border-radius:18px;box-shadow:0 6px 24px rgba(0,0,0,.35)}
+.date-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.date-title{display:flex;align-items:center;gap:10px;font-weight:800;color:var(--brand)}
+.date-title .emoji{font-size:1.2rem}
+.jalali-input{display:flex;gap:8px;align-items:center;margin-top:6px}
+.jalali-input .input{flex:1}
+.date-actions{display:flex;gap:8px;justify-content:center;margin-top:10px}
+.i-btn.success{background:linear-gradient(135deg,#22c55e,#16a34a);color:#0d1b10;border:none;font-weight:800}
+.i-btn.danger{background:linear-gradient(135deg,#ef4444,#dc2626);color:#230b0b;border:none;font-weight:800}
+.calendar{margin-top:10px;border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:10px;background:#0e121a}
+.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.cal-head .nav{display:flex;gap:6px}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cal-cell{padding:8px 0;border-radius:10px;text-align:center;background:#0b0e14;border:1px solid rgba(255,255,255,.08);cursor:pointer}
+.cal-cell.muted{opacity:.5}
+.cal-cell.today{outline:2px solid var(--brand);}
+.cal-cell.selected{background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#232211;border:none}
+.old-selects{display:none}
+.date-preview{margin-top:10px;display:flex;gap:8px;align-items:center;color:#e7ecf3;font-weight:700}
+</style>
+<script>
+  // Inject manifest only on http(s) to avoid CORS on file://
+  (function(){
+    const IS_HTTP = location.protocol.startsWith('http');
+    if (IS_HTTP) {
+      const m = document.createElement('link');
+      m.rel='manifest'; m.href='manifest.webmanifest'; document.head.appendChild(m);
+    }
+  })();
+</script>
+</head>
+<body>
+<header class="appbar">
+  <div class="appbar-inner">
+    <div style="display:flex;align-items:center;gap:12px">
+      <div class="logo" aria-hidden="true"></div>
+      <div><div style="font-weight:800">گنجینه</div><div style="color:#9aa4b2;font-size:.86rem">مدیریت موجودی طلافروشی</div></div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn-ghost btn-sm" id="print-btn">چاپ</button>
+      <button class="btn-ghost btn-sm" id="theme-toggle">حالت روشن/تاریک</button>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <div class="grid">
+    <!-- DATE (enhanced) -->
+    <section class="card date-card" aria-labelledby="date-title">
+      <div class="date-head">
+        <div class="date-title"><span class="emoji">📅</span><h2 id="date-title" style="font-size:1.05rem">تاریخ ورود داده (هجری شمسی)</h2></div>
+        <span class="pill"><span id="weekday-pill">—</span></span>
+      </div>
+      <div class="jalali-input">
+        <input id="jalali-date" class="input" placeholder="مثال: ۱۴۰۴/۰۷/۰۹" autocomplete="off">
+        <button class="i-btn success" id="btn-today">امروز</button>
+        <button class="i-btn danger" id="btn-clear-date">پاک‌سازی</button>
+      </div>
+      <div class="calendar" id="jalali-calendar" aria-label="تقویم شمسی">
+        <div class="cal-head">
+          <div class="nav">
+            <button class="i-btn" id="cal-prev">‹</button>
+            <button class="i-btn" id="cal-next">›</button>
+          </div>
+          <div id="cal-title" style="font-weight:800"></div>
+          <div></div>
+        </div>
+        <div class="cal-grid" id="cal-weekdays"></div>
+        <div class="cal-grid" id="cal-days"></div>
+      </div>
+      <div class="date-actions">
+        <button class="i-btn primary" id="confirm-date">تأیید تاریخ</button>
+        <button class="i-btn" id="change-date" title="نمایش فرم">نمایش فرم</button>
+      </div>
+      <!-- Hidden legacy selects to keep logic consistent -->
+      <div id="date-setup" class="row old-selects">
+        <div class="col"><label for="j-year">سال</label><select id="j-year" class="select"></select></div>
+        <div class="col"><label for="j-month">ماه</label>
+          <select id="j-month" class="select">
+            <option value="1">فروردین</option><option value="2">اردیبهشت</option><option value="3">خرداد</option>
+            <option value="4">تیر</option><option value="5">مرداد</option><option value="6">شهریور</option>
+            <option value="7">مهر</option><option value="8">آبان</option><option value="9">آذر</option>
+            <option value="10">دی</option><option value="11">بهمن</option><option value="12">اسفند</option>
+          </select>
+        </div>
+        <div class="col"><label for="j-day">روز</label><select id="j-day" class="select"></select></div>
+      </div>
+      <div id="date-fixed" class="row" style="display:none">
+        <div class="col"><div style="color:#9aa4b2">ثبت‌شده: <b id="current-date-jalali">—</b> <span id="current-date-greg" class="meta"></span></div></div>
+      </div>
+      <div class="date-preview" id="date-preview" style="display:none">
+        <span class="badge" id="weekday-badge">—</span>
+        <span id="preview-text">—</span>
+      </div>
+    </section>
+
+    <!-- GOLD -->
+    <section class="card" id="gold-tab">
+      <h2 style="font-size:1.05rem;color:var(--brand);font-weight:800">طلای مستعمل</h2>
+      <div class="row" style="margin-top:8px">
+        <div class="col select-wrap">
+          <select class="select" id="gold-karat"><option value="">انتخاب عیار</option></select>
+          <div class="inline-actions">
+            <button class="i-btn" id="gold-opt-add">افزودن</button>
+            <button class="i-btn" id="gold-opt-del">حذف</button>
+            <button class="i-btn primary" id="gold-record-add">ثبت</button>
+          </div>
+        </div>
+        <div class="col"><input type="text" class="input" id="gold-weight" placeholder="وزن (گرم) مثال: 12.500" inputmode="decimal"></div>
+      </div>
+      <div class="list" id="gold-items-list"><div style="color:#9aa4b2">هنوز آیتمی ثبت نشده</div></div>
+    </section>
+
+    <!-- COINS -->
+    <section class="card" id="coins-tab">
+      <h2 style="font-size:1.05rem;color:var(--brand);font-weight:800">سکه‌ها</h2>
+      <div class="row" style="margin-top:8px">
+        <div class="col select-wrap">
+          <select class="select" id="coin-type"><option value="">انتخاب نوع سکه</option></select>
+          <div class="inline-actions">
+            <button class="i-btn" id="coin-opt-add">افزودن</button>
+            <button class="i-btn" id="coin-opt-del">حذف</button>
+            <button class="i-btn primary" id="coin-record-add">ثبت</button>
+          </div>
+        </div>
+        <div class="col"><input type="text" class="input" id="coin-count" placeholder="تعداد" inputmode="numeric"></div>
+      </div>
+      <div class="list" id="coin-items-list"><div style="color:#9aa4b2">هنوز آیتمی ثبت نشده</div></div>
+    </section>
+
+    <!-- CASH -->
+    <section class="card" id="cash-tab">
+      <h2 style="font-size:1.05rem;color:var(--brand);font-weight:800">نقدینگی</h2>
+      <div class="row" style="margin-top:8px">
+        <div class="col"><input type="text" class="input" id="cash-amount" placeholder="مبلغ نقدی (ریال)" inputmode="numeric"></div>
+        <button class="i-btn primary" id="save-cash" type="button">ذخیره</button>
+      </div>
+      <div class="list" id="cash-note"><div style="color:#9aa4b2">آخرین مبلغ ذخیره‌شده در بالا نمایش داده می‌شود.</div></div>
+    </section>
+
+    <!-- BANK -->
+    <section class="card" id="bank-tab">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <h2 style="font-size:1.05rem;color:var(--brand);font-weight:800">حساب بانکی</h2>
+        <span class="badge">پیوست عکس رسید/کارت</span>
+      </div>
+      <div class="row" style="margin-top:8px">
+        <div class="col select-wrap">
+          <select class="select" id="bank-name"><option value="">انتخاب بانک</option></select>
+          <div class="inline-actions">
+            <button class="i-btn" id="bank-opt-add">افزودن</button>
+            <button class="i-btn" id="bank-opt-del">حذف</button>
+            <button class="i-btn primary" id="bank-record-add">ثبت</button>
+          </div>
+        </div>
+        <div class="col"><input type="text" class="input" id="card-number" placeholder="شماره کارت (اختیاری)" inputmode="numeric"></div>
+        <div class="col"><input type="text" class="input" id="bank-amount" placeholder="مبلغ (ریال)" inputmode="numeric"></div>
+      </div>
+      <div class="row" style="margin-top:8px">
+        <input id="file-upload" type="file" accept="image/*" style="display:none">
+        <input id="file-camera" type="file" accept="image/*" capture="environment" style="display:none">
+        <button class="i-btn" id="btn-upload">آپلود عکس</button>
+        <button class="i-btn" id="btn-camera">گرفتن عکس</button>
+      </div>
+      <div class="thumb-wrap" id="bank-photos-preview"></div>
+      <div class="help-note">حداکثر ۳ عکس برای هر رکورد. تصاویر به‌صورت آفلاین در مرورگر ذخیره می‌شوند.</div>
+      <div class="list" id="bank-cards-list" style="margin-top:12px"><div style="color:#9aa4b2">هنوز آیتمی ثبت نشده</div></div>
+    </section>
+
+    <!-- DAILY -->
+    <section class="card" id="daily-tab">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <h2 style="font-size:1.05rem;color:var(--brand);font-weight:800">گزارش روزانه</h2>
+        <div class="pill" id="date-badge">—</div>
+      </div>
+      <div id="daily-toolbar" class="row" style="gap:8px;margin:0 0 8px 0">
+        <button class="btn-ghost btn-sm" id="btn-export-json">خروجی JSON</button>
+        <button class="btn-ghost btn-sm" id="btn-export-csv">خروجی CSV</button>
+        <label class="btn-ghost btn-sm" for="import-file">ورود از فایل</label>
+        <input id="import-file" type="file" accept=".json,.csv" style="display:none">
+        <button class="btn-ghost btn-sm" id="btn-undo">واگرد</button>
+        <button class="btn-ghost btn-sm" id="btn-help">راهنما</button>
+      </div>
+      <div id="daily-list"><div style="color:#9aa4b2">فعلاً داده‌ای ثبت نشده است</div></div>
+    </section>
+  </div>
+</main>
+
+<div class="tabs">
+  <div class="tabs-inner">
+    <button class="tab active" id="tab-gold">طلای مستعمل</button>
+    <button class="tab" id="tab-coins">سکه‌ها</button>
+    <button class="tab" id="tab-cash">نقدینگی</button>
+    <button class="tab" id="tab-bank">بانک</button>
+    <button class="tab" id="tab-daily">روزانه</button>
+  </div>
+</div>
+
+<div class="viewer" id="photo-viewer"><img alt="preview"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const toast=document.getElementById('toast');
+function showToast(m){toast.textContent=m;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),1600)}
+document.getElementById('theme-toggle').addEventListener('click',()=>{ document.documentElement.classList.toggle('light'); showToast('حالت نمایش تغییر کرد'); });
+document.getElementById('print-btn').addEventListener('click',()=>window.print());
+
+// Jalali conversion + date helpers
+function g2j(gy, gm, gd){const g_d_m=[0,31,59,90,120,151,181,212,243,273,304,334];let gy2=(gm>2)?(gy+1):gy;let days=355666+(365*gy)+Math.floor((gy2+3)/4)-Math.floor((gy2+99)/100)+Math.floor((gy2+399)/400)+gd+g_d_m[gm-1];let jy=-1595+33*Math.floor(days/12053);days%=12053;jy+=4*Math.floor(days/1461);days%=1461;if(days>365){jy+=Math.floor((days-1)/365);days=(days-1)%365;}let jm=(days<186)?1+Math.floor(days/31):7+Math.floor((days-186)/30);let jd=1+((days<186)?(days%31):((days-186)%30));return {jy,jm,jd};}
+function j2g(jy,jm,jd){jy=parseInt(jy,10);jm=parseInt(jm,10);jd=parseInt(jd,10);let jy2=jy+1595;let days=-355668+(365*jy2)+Math.floor(jy2/33)*8+Math.floor(((jy2%33)+3)/4)+jd+(jm<7?(jm-1)*31:(jm-7)*30+186);let gy=400*Math.floor(days/146097);days%=146097;if(days>36524){gy+=100*Math.floor(--days/36524);days%=36524;if(days>=365)days++;}gy+=4*Math.floor(days/1461);days%=1461;if(days>365){gy+=Math.floor((days-1)/365);days=(days-1)%365;}let gd=days+1;const sal_a=[31,((gy%4===0&&gy%100!==0)||(gy%400===0))?29:28,31,30,31,30,31,31,30,31,30,31];let gm=0;for(gm=1;gm<=12&&gd>sal_a[gm-1];gm++){gd-=sal_a[gm-1];}return {gy,gm,gd};}
+function isoToJalali(iso){const [y,m,d]=iso.split('-').map(v=>parseInt(v,10));const {jy,jm,jd}=g2j(y,m,d);return `${jy}-${String(jm).padStart(2,'0')}-${String(jd).padStart(2,'0')}`;}
+function jalaliToISO(jy,jm,jd){const {gy,gm,gd}=j2g(jy,jm,jd);return `${String(gy).padStart(4,'0')}-${String(gm).padStart(2,'0')}-${String(gd).padStart(2,'0')}`;}
+function weekdayFaFromISO(iso){const dt=new Date(iso+'T12:00:00+03:30');return ['یک‌شنبه','دو‌شنبه','سه‌شنبه','چهارشنبه','پنج‌شنبه','جمعه','شنبه'][dt.getDay()];}
+function todayTehranISODate(){try{return new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Tehran',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());}catch(e){const now=new Date();const utc=now.getTime()+now.getTimezoneOffset()*60000;const tehran=new Date(utc+3.5*3600*1000);return new Date(tehran).toISOString().slice(0,10);}}
+const J_MONTHS=['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
+function parseJalaliStr(s){const m=s.replace(/\s/g,'').match(/^(\d{4})[\/-](\d{1,2})[\/-](\d{1,2})$/); if(!m) return null; const jy=+m[1], jm=+m[2], jd=+m[3]; return {jy,jm,jd};}
+function formatJalali(jy,jm,jd){return jy+'-'+String(jm).padStart(2,'0')+'-'+String(jd).padStart(2,'0');}
+
+// State
+let currentDate=null;
+let inventory={ gold:[], coins:[], banks:[], cash:0, cashLog:[], karats:['18','21','24'], coinTypes:['بهار آزادی','نیم سکه','ربع سکه','سکه گرمی'], bankNames:['ملی','ملت','صادرات','پارسیان','تجارت','رفاه','سامان'] };
+
+// Elements
+const jYear=document.getElementById('j-year'), jMonth=document.getElementById('j-month'), jDay=document.getElementById('j-day');
+const dateSetup=document.getElementById('date-setup'), dateFixed=document.getElementById('date-fixed');
+const weekdayPill=document.getElementById('weekday-pill');
+const currentDateJ=document.getElementById('current-date-jalali');
+const currentDateG=document.getElementById('current-date-greg');
+const dateBadge=document.getElementById('date-badge');
+
+function save(){ localStorage.setItem('inventory',JSON.stringify(inventory)); }
+function load(){ const s=localStorage.getItem('inventory'); if(s){ try{ inventory={...inventory,...JSON.parse(s)} }catch{} } }
+
+function isJLeap(jy){const g=j2g(jy,12,30);const back=g2j(g.gy,g.gm,g.gd);return back.jd===30&&back.jm===12;}
+function daysInJMonth(jy,jm){if(jm<=6)return 31;if(jm<=11)return 30;return isJLeap(jy)?30:29;}
+function fillYears(centerJy){ if(!jYear) return; jYear.textContent=''; for(let y=centerJy-5;y<=centerJy+5;y++){const opt=document.createElement('option');opt.value=String(y);opt.textContent=String(y);if(y===centerJy)opt.selected=true;jYear.appendChild(opt);} }
+function fillDays(jy,jm,selected=null){ if(!jDay) return; jDay.textContent='';const n=daysInJMonth(jy,jm);for(let d=1;d<=n;d++){const opt=document.createElement('option');opt.value=String(d);opt.textContent=String(d).padStart(2,'0');if(selected && d===selected)opt.selected=true;jDay.appendChild(opt);} }
+
+// Calendar UI
+let calState={jy:1400,jm:1,jd:1,selected:null};
+function renderCalendar(){
+  const wdGrid=document.getElementById('cal-weekdays'); const dGrid=document.getElementById('cal-days');
+  if(!wdGrid || !dGrid) return;
+  wdGrid.textContent=''; ['ش','ی','د','س','چ','پ','ج'].forEach(l=>{ const c=document.createElement('div'); c.className='cal-cell muted'; c.textContent=l; wdGrid.append(c); });
+  dGrid.textContent='';
+  const title=document.getElementById('cal-title'); if(title) title.textContent=J_MONTHS[calState.jm-1]+' '+calState.jy;
+  const startISO=jalaliToISO(calState.jy,calState.jm,1);
+  const start = new Date(startISO+'T12:00:00+03:30');
+  const firstWd = (start.getDay()+6)%7; // Saturday index 0
+  const dim = daysInJMonth(calState.jy, calState.jm);
+  for(let i=0;i<firstWd;i++){ const p=document.createElement('div'); p.className='cal-cell muted'; p.textContent=''; dGrid.append(p); }
+  const todayISO=todayTehranISODate(); const {jy:tjy,jm:tjm,jd:tjd}=g2j(parseInt(todayISO.slice(0,4)),parseInt(todayISO.slice(5,7)),parseInt(todayISO.slice(8,10)));
+  for(let d=1; d<=dim; d++){
+    const c=document.createElement('div'); c.className='cal-cell'; c.textContent=String(d);
+    if(tjy===calState.jy && tjm===calState.jm && tjd===d) c.classList.add('today');
+    if(calState.selected && calState.selected.jy===calState.jy && calState.selected.jm===calState.jm && calState.selected.jd===d) c.classList.add('selected');
+    c.addEventListener('click',()=>{
+      calState.selected={jy:calState.jy,jm:calState.jm,jd:d};
+      const inp=document.getElementById('jalali-date');
+      inp.value = formatJalali(calState.jy,calState.jm,d).replace(/-/g,'/');
+      renderCalendar();
+    });
+    dGrid.append(c);
+  }
+}
+
+function applyDate(iso){
+  currentDate=iso; localStorage.setItem('currentDate', iso);
+  const j=isoToJalali(iso); weekdayPill.textContent=weekdayFaFromISO(iso);
+  if(dateSetup) dateSetup.style.display='none'; if(dateFixed) dateFixed.style.display='flex';
+  if (currentDateJ) currentDateJ.textContent=j;
+  if (currentDateG) currentDateG.textContent=`(${iso})`;
+  if (dateBadge) dateBadge.textContent = j;
+  const prev=document.getElementById('date-preview'); const wt=document.getElementById('weekday-badge'); const pt=document.getElementById('preview-text');
+  if(prev){ prev.style.display='flex'; wt.textContent=weekdayFaFromISO(iso); pt.textContent=isoToJalali(iso)+' ('+iso+')'; }
+  showToast('تاریخ ثبت شد');
+}
+function showSetup(){ if(dateSetup) dateSetup.style.display='flex'; if(dateFixed) dateFixed.style.display='none'; }
+
+function initDate(){
+  const savedISO=localStorage.getItem('currentDate');
+  const baseISO = savedISO || todayTehranISODate();
+  const y=parseInt(baseISO.slice(0,4)), m=parseInt(baseISO.slice(5,7)), d=parseInt(baseISO.slice(8,10));
+  const {jy,jm,jd}=g2j(y,m,d);
+  fillYears(jy); if(jMonth) jMonth.value=String(jm); fillDays(jy,jm,jd);
+
+  // init calendar state
+  calState={jy,jm,jd,selected: savedISO?{jy:jy,jm:jm,jd:jd}:null};
+  renderCalendar();
+  const jInput=document.getElementById('jalali-date');
+  jInput.value = (savedISO? isoToJalali(savedISO): formatJalali(jy,jm,jd)).replace(/-/g,'/');
+
+  if(savedISO){ applyDate(savedISO); } else { if(dateBadge){ dateBadge.textContent = `${jy}-${String(jm).padStart(2,'0')}-${String(jd).padStart(2,'0')}`; } }
+}
+
+if(jYear) jYear.addEventListener('change',()=>fillDays(parseInt(jYear.value,10), parseInt(jMonth.value,10), Math.min(parseInt(jDay.value||'1',10), daysInJMonth(parseInt(jYear.value,10), parseInt(jMonth.value,10)))));
+if(jMonth) jMonth.addEventListener('change',()=>fillDays(parseInt(jYear.value,10), parseInt(jMonth.value,10)));
+
+document.getElementById('btn-today').addEventListener('click',()=>{
+  const iso=todayTehranISODate();const {jy,jm,jd}=g2j(parseInt(iso.slice(0,4)), parseInt(iso.slice(5,7)), parseInt(iso.slice(8,10)));
+  calState={jy,jm,jd,selected:{jy,jm,jd}}; renderCalendar();
+  document.getElementById('jalali-date').value = formatJalali(jy,jm,jd).replace(/-/g,'/');
+});
+document.getElementById('btn-clear-date').addEventListener('click',()=>{ localStorage.removeItem('currentDate'); currentDate=null; showSetup(); showToast('تاریخ پاک شد'); });
+
+document.getElementById('cal-prev').addEventListener('click',()=>{ calState.jm--; if(calState.jm<1){calState.jm=12; calState.jy--;} renderCalendar(); });
+document.getElementById('cal-next').addEventListener('click',()=>{ calState.jm++; if(calState.jm>12){calState.jm=1; calState.jy++;} renderCalendar(); });
+const jInput=document.getElementById('jalali-date');
+jInput.addEventListener('input',()=>{ const v=parseJalaliStr(jInput.value.replace(/[٫.,]/g,'/')); if(v){calState={...calState,jy:v.jy,jm:v.jm,jd:v.jd,selected:{...v}}; renderCalendar();} });
+
+document.getElementById('confirm-date').addEventListener('click',()=>{
+  const v=parseJalaliStr(jInput.value.replace(/-/g,'/'));
+  if(!v){ alert('تاریخ معتبر وارد کنید. مثال: ۱۴۰۴/۰۷/۰۹'); return; }
+  const iso=jalaliToISO(v.jy,v.jm,v.jd); applyDate(iso);
+});
+document.getElementById('change-date').addEventListener('click',showSetup);
+
+// Populate dropdowns for other tabs
+function populate(){
+  const g=document.getElementById('gold-karat'); g.textContent=''; g.append(new Option('انتخاب','')); (inventory.karats||[]).forEach(v=>g.append(new Option(v,v)));
+  const c=document.getElementById('coin-type'); c.textContent=''; c.append(new Option('انتخاب','')); (inventory.coinTypes||[]).forEach(v=>c.append(new Option(v,v)));
+  const b=document.getElementById('bank-name'); b.textContent=''; b.append(new Option('انتخاب','')); (inventory.bankNames||[]).forEach(v=>b.append(new Option(v,v)));
+}
+
+// Render lists (no delete buttons per your preference)
+const toMg=g=>Math.round(Number(g)*1000), mgToStr=mg=>(Number(mg)/1000).toFixed(3);
+function renderGold(){ const wrap=document.getElementById('gold-items-list'); wrap.textContent='';
+  if(!(inventory.gold||[]).length){ wrap.innerHTML='<div style="color:#9aa4b2">هنوز آیتمی ثبت نشده</div>'; return; }
+  (inventory.gold||[]).forEach((it)=>{ const row=document.createElement('div'); row.className='item';
+    const left=document.createElement('div'); left.innerHTML=`<b>${it.karat} عیار – ${mgToStr(it.weightMg)} گرم</b><div class="meta">${it.date?isoToJalali(it.date):'بدون تاریخ'}</div>`;
+    row.append(left,document.createElement('div')); wrap.append(row); });
+}
+function renderCoin(){ const wrap=document.getElementById('coin-items-list'); wrap.textContent='';
+  if(!(inventory.coins||[]).length){ wrap.innerHTML='<div style="color:#9aa4b2">هنوز آیتمی ثبت نشده</div>'; return; }
+  (inventory.coins||[]).forEach((it)=>{ const row=document.createElement('div'); row.className='item';
+    const left=document.createElement('div'); left.innerHTML=`<b>${it.type} – ${it.count} عدد</b><div class="meta">${it.date?isoToJalali(it.date):'بدون تاریخ'}</div>`;
+    row.append(left,document.createElement('div')); wrap.append(row); });
+}
+
+// BANK photos
+let stagedPhotos=[]; const MAX_PHOTOS=3;
+function downscaleImage(file, maxW=1280, maxH=1280, quality=0.8){
+  return new Promise((resolve,reject)=>{
+    const img=new Image();
+    img.onload=()=>{
+      let w=img.naturalWidth, h=img.naturalHeight;
+      const scale=Math.min(1, maxW/w, maxH/h);
+      const cw=w*scale, ch=h*scale;
+      const canvas=document.createElement('canvas'); canvas.width=cw; canvas.height=ch;
+      const ctx=canvas.getContext('2d'); ctx.drawImage(img,0,0,cw,ch);
+      canvas.toBlob(b=>{
+        const reader=new FileReader();
+        reader.onload=()=>resolve(reader.result);
+        reader.onerror=reject;
+        reader.readAsDataURL(b);
+      }, 'image/jpeg', quality);
+    };
+    img.onerror=reject;
+    const fr=new FileReader();
+    fr.onload=()=>{ img.src=fr.result; };
+    fr.onerror=reject;
+    fr.readAsDataURL(file);
+  });
+}
+function addThumb(dataURL){
+  const wrap=document.getElementById('bank-photos-preview');
+  const img=document.createElement('img'); img.src=dataURL; img.alt='photo'; img.className='thumb';
+  const del=document.createElement('button'); del.textContent='✕'; del.className='btn-ghost btn-sm'; del.style.marginInlineStart='4px';
+  const box=document.createElement('div'); box.style.display='inline-flex'; box.style.alignItems='center'; box.append(img,del);
+  img.onclick=()=>openViewer(dataURL);
+  del.onclick=()=>{ wrap.removeChild(box); stagedPhotos=stagedPhotos.filter(p=>p!==dataURL); };
+  wrap.append(box);
+}
+document.getElementById('btn-upload').onclick=()=>document.getElementById('file-upload').click();
+document.getElementById('btn-camera').onclick=()=>document.getElementById('file-camera').click();
+document.getElementById('file-upload').addEventListener('change', handleFiles, false);
+document.getElementById('file-camera').addEventListener('change', handleFiles, false);
+async function handleFiles(e){
+  const files=[...e.target.files];
+  for (const f of files){
+    if(stagedPhotos.length>=MAX_PHOTOS){ alert('حداکثر ۳ عکس'); break; }
+    try{
+      const data=await downscaleImage(f,1280,1280,0.85);
+      stagedPhotos.push(data); addThumb(data);
+    }catch(err){ console.error(err); alert('خطا در پردازش عکس'); }
+  }
+  e.target.value='';
+}
+function openViewer(src){
+  const v=document.getElementById('photo-viewer');
+  v.querySelector('img').src=src; v.classList.add('show');
+}
+document.getElementById('photo-viewer').addEventListener('click',e=>{ if(e.target.id==='photo-viewer') e.currentTarget.classList.remove('show'); });
+function renderBank(){ const wrap=document.getElementById('bank-cards-list'); wrap.textContent='';
+  if(!(inventory.banks||[]).length){ wrap.innerHTML='<div style="color:#9aa4b2">هنوز آیتمی ثبت نشده</div>'; return; }
+  (inventory.banks||[]).forEach((it)=>{
+    const row=document.createElement('div'); row.className='item';
+    const left=document.createElement('div');
+    let thumbs=''; (it.photos||[]).forEach((p,idx)=>{ thumbs+=`<img src="${p}" alt="photo ${idx+1}" class="thumb" style="margin-left:6px;cursor:pointer">`; });
+    left.innerHTML=`<b>${it.name}</b>
+      <div class="meta">${it.cardNumber?('کارت: '+it.cardNumber+' – '):''}${it.date?isoToJalali(it.date):'بدون تاریخ'} | <b>${String(it.amount).replace(/\B(?=(\d{3})+(?!\d))/g,',')} ریال</b></div>
+      <div class="thumb-wrap">${thumbs||''}</div>`;
+    row.append(left,document.createElement('div')); wrap.append(row);
+  });
+  wrap.querySelectorAll('img.thumb').forEach(img=>img.addEventListener('click',()=>openViewer(img.src)));
+}
+
+// Record add inside selects
+document.getElementById('gold-record-add').onclick=()=>{
+  if(!currentDate) return alert('ابتدا تاریخ را تعیین کنید');
+  const k=document.getElementById('gold-karat').value; const w=parseFloat(document.getElementById('gold-weight').value);
+  if(k && !isNaN(w) && w>0){ inventory.gold.push({karat:k,weightMg:Math.round(w*1000),date:currentDate}); save(); renderGold(); renderDaily(); showToast('طلای جدید ثبت شد'); } else alert('اطلاعات کامل نیست');
+};
+document.getElementById('coin-record-add').onclick=()=>{
+  if(!currentDate) return alert('ابتدا تاریخ را تعیین کنید');
+  const t=document.getElementById('coin-type').value; const c=parseInt(document.getElementById('coin-count').value.replace(/,/g,''),10);
+  if(t && !isNaN(c) && c>0){ inventory.coins.push({type:t,count:c,date:currentDate}); save(); renderCoin(); renderDaily(); showToast('سکه ثبت شد'); } else alert('اطلاعات کامل نیست');
+};
+document.getElementById('bank-record-add').onclick=()=>{
+  if(!currentDate) return alert('ابتدا تاریخ را تعیین کنید');
+  const name=document.getElementById('bank-name').value;
+  const card=document.getElementById('card-number').value;
+  const amount=parseInt(document.getElementById('bank-amount').value.replace(/,/g,''),10);
+  if(!name || isNaN(amount) || amount<0) return alert('بانک و مبلغ را صحیح وارد کنید');
+  const photos=[...stagedPhotos]; stagedPhotos=[]; document.getElementById('bank-photos-preview').textContent='';
+  inventory.banks.push({name,cardNumber:card,amount,date:currentDate,photos});
+  save(); renderBank(); renderDaily(); showToast('رکورد بانکی ثبت شد');
+};
+
+// Option add/remove
+function promptAddOption(title){ const v=prompt(title+' را وارد کنید:'); if(!v) return null; return v.trim(); }
+function removeSelectedOption(select, list){ const val=select.value; if(!val) return alert('ابتدا یک گزینه را انتخاب کنید'); const i=list.indexOf(val); if(i>-1){ list.splice(i,1); save(); return true; } return false; }
+document.getElementById('gold-opt-add').onclick=()=>{ const v=promptAddOption('عیار'); if(!v) return; (inventory.karats=inventory.karats||[]).push(v); save(); populate(); showToast('گزینهٔ عیار اضافه شد'); };
+document.getElementById('gold-opt-del').onclick=()=>{ const s=document.getElementById('gold-karat'); if(removeSelectedOption(s, inventory.karats)){ populate(); showToast('گزینهٔ عیار حذف شد'); } };
+document.getElementById('coin-opt-add').onclick=()=>{ const v=promptAddOption('نوع سکه'); if(!v) return; (inventory.coinTypes=inventory.coinTypes||[]).push(v); save(); populate(); showToast('گزینهٔ سکه اضافه شد'); };
+document.getElementById('coin-opt-del').onclick=()=>{ const s=document.getElementById('coin-type'); if(removeSelectedOption(s, inventory.coinTypes)){ populate(); showToast('گزینهٔ سکه حذف شد'); } };
+document.getElementById('bank-opt-add').onclick=()=>{ const v=promptAddOption('نام بانک'); if(!v) return; (inventory.bankNames=inventory.bankNames||[]).push(v); save(); populate(); showToast('گزینهٔ بانک اضافه شد'); };
+document.getElementById('bank-opt-del').onclick=()=>{ const s=document.getElementById('bank-name'); if(removeSelectedOption(s, inventory.bankNames)){ populate(); showToast('گزینهٔ بانک حذف شد'); } };
+
+// Inputs
+document.getElementById('card-number').addEventListener('input',e=>{ const d=e.target.value.replace(/\D/g,'').slice(0,16); e.target.value=d.replace(/(\d{4})(?=\d)/g,'$1-'); });
+
+// Tabs
+const tabBtns=[...document.querySelectorAll('.tab')];
+const panels=['gold','coins','cash','bank','daily'].map(x=>document.getElementById(x+'-tab'));
+function showPanel(name){ panels.forEach(p=>p.style.display = (p.id===name+'-tab')?'block':'none'); tabBtns.forEach(b=>b.classList.toggle('active',b.id==='tab-'+name)); }
+tabBtns.forEach(btn=>btn.addEventListener('click',()=>{ const name=btn.id.replace('tab-',''); showPanel(name); showToast(btn.textContent+' باز شد'); }));
+
+// Daily aggregation
+function renderDaily(){ const wrap=document.getElementById('daily-list'); wrap.textContent=''; const map={}; const ensure=d=>map[d]||(map[d]={gold:0,coin:0,bank:0}); const unk='بدون تاریخ';
+  (inventory.gold||[]).forEach(g=>{ ensure(g.date||unk).gold+=Number(g.weightMg||0); });
+  (inventory.coins||[]).forEach(c=>{ ensure(c.date||unk).coin+=Number(c.count||0); });
+  (inventory.banks||[]).forEach(b=>{ ensure(b.date||unk).bank+=Number(b.amount||0); });
+  const dates=Object.keys(map); if(!dates.length){ wrap.innerHTML='<div style="color:#9aa4b2">فعلاً داده‌ای ثبت نشده است</div>'; return; }
+  dates.sort((a,b)=> (a===unk?1:0)-(b===unk?1:0) || (a>b?-1:1));
+  dates.forEach(d=>{ const box=document.createElement('div'); box.className='item';
+    const left=document.createElement('div'); left.innerHTML=`<b>${d==='بدون تاریخ'?'بدون تاریخ':(weekdayFaFromISO(d)+' – '+isoToJalali(d))}</b>`;
+    const meta=document.createElement('div'); meta.className='meta'; meta.textContent='طلا: '+(map[d].gold/1000).toFixed(3)+' گرم | سکه: '+map[d].coin+' عدد | بانکی: '+String(map[d].bank).replace(/\B(?=(\d{3})+(?!\d))/g,',')+' ریال';
+    left.append(meta); box.append(left,document.createElement('div')); wrap.append(box); });
+}
+
+// Export/Import/Undo/Help
+function download(filename, text){ const blob=new Blob([text],{type:'text/plain;charset=utf-8'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=filename; a.click(); URL.revokeObjectURL(a.href); }
+document.getElementById('btn-export-json').onclick=()=>download('ganjineh.json', JSON.stringify({currentDate,inventory}, null, 2));
+document.getElementById('btn-export-csv').onclick=()=>{
+  const rows=['type,karat_or_bank_or_coin,amount_or_weight_or_count,date,photos_count'];
+  (inventory.gold||[]).forEach(g=>rows.push(`gold,${g.karat},${(g.weightMg/1000).toFixed(3)},${g.date||''},0`));
+  (inventory.coins||[]).forEach(c=>rows.push(`coin,${c.type},${c.count},${c.date||''},0`));
+  (inventory.banks||[]).forEach(b=>rows.push(`bank,${b.name},${b.amount},${b.date||''},${(b.photos||[]).length}`));
+  download('ganjineh.csv', rows.join('\n'));
+};
+document.getElementById('import-file').addEventListener('change',async (e)=>{
+  const f=e.target.files[0]; if(!f) return;
+  const text=await f.text();
+  try{
+    if(f.name.endsWith('.json')){ const data=JSON.parse(text); if(data.inventory){ inventory=data.inventory; if(data.currentDate){ localStorage.setItem('currentDate', data.currentDate); currentDate=data.currentDate; } save(); populate(); renderGold(); renderCoin(); renderBank(); renderDaily(); showToast('ورود JSON انجام شد'); } }
+    else{ alert('ورود CSV در این نسخه فقط برای خروجی است.'); }
+  }catch(err){ alert('خطا در ورود فایل'); console.error(err); }
+});
+document.getElementById('btn-undo').onclick=()=>{ const s=localStorage.getItem('inventory_backup'); if(!s) return alert('پشتیبان موجود نیست'); inventory=JSON.parse(s); save(); populate(); renderGold(); renderCoin(); renderBank(); renderDaily(); showToast('بازگردانی شد'); };
+document.getElementById('btn-help').onclick=()=>alert('راهنما: تاریخ شمسی را از ورودی یا تقویم انتخاب کنید؛ سپس تأیید تاریخ را بزنید. در هر تب، دکمه‌های افزودن/حذف گزینه‌ها داخل همان کشویی قرار گرفته‌اند. در تب بانک می‌توانید تا ۳ عکس پیوست کنید.');
+
+// Backup hook
+const _save=save; save=function(){ localStorage.setItem('inventory_backup', JSON.stringify(inventory)); _save(); };
+
+// SW guard for file://
+const IS_HTTP = location.protocol.startsWith('http');
+if (IS_HTTP && 'serviceWorker' in navigator) {
+  window.addEventListener('load', ()=>navigator.serviceWorker.register('./sw.js'));
+} else if (!IS_HTTP) {
+  setTimeout(()=>{ try { const t=document.getElementById('toast'); t.textContent='برای تست PWA، از http/https استفاده کنید (file:// پشتیبانی نمی‌شود).'; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'), 2600);} catch(e){} }, 400);
+}
+
+// Init
+load(); populate(); initDate(); renderGold(); renderCoin(); renderBank(); renderDaily(); showPanel('gold');
+</script>
+</body>
+</html>
