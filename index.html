@@ -81,6 +81,7 @@
     </div>
     <div style="display:flex;gap:8px">
       <button class="btn-ghost btn-sm" id="print-btn">چاپ</button>
+      <button class="btn-ghost btn-sm" id="open-date-btn" title="نمایش/تغییر تاریخ">تاریخ</button>
       <button class="btn-ghost btn-sm" id="theme-toggle">حالت روشن/تاریک</button>
     </div>
   </div>
@@ -247,6 +248,10 @@ const toast=document.getElementById('toast');
 function showToast(m){toast.textContent=m;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),1600)}
 document.getElementById('theme-toggle').addEventListener('click',()=>{ document.documentElement.classList.toggle('light'); showToast('حالت نمایش تغییر کرد'); });
 document.getElementById('print-btn').addEventListener('click',()=>window.print());
+// Open date form from appbar (allows reopening during same session)
+const openDateBtn = document.getElementById('open-date-btn');
+const dateCardEl = document.querySelector('.date-card');
+if(openDateBtn){ openDateBtn.addEventListener('click',()=>{ if(dateCardEl) dateCardEl.style.display='block'; showSetup(); const inp=document.getElementById('jalali-date'); if(inp){ inp.focus(); inp.select(); } }); }
 
 // Jalali conversion + date helpers
 function g2j(gy, gm, gd){const g_d_m=[0,31,59,90,120,151,181,212,243,273,304,334];let gy2=(gm>2)?(gy+1):gy;let days=355666+(365*gy)+Math.floor((gy2+3)/4)-Math.floor((gy2+99)/100)+Math.floor((gy2+399)/400)+gd+g_d_m[gm-1];let jy=-1595+33*Math.floor(days/12053);days%=12053;jy+=4*Math.floor(days/1461);days%=1461;if(days>365){jy+=Math.floor((days-1)/365);days=(days-1)%365;}let jm=(days<186)?1+Math.floor(days/31):7+Math.floor((days-186)/30);let jd=1+((days<186)?(days%31):((days-186)%30));return {jy,jm,jd};}
@@ -322,6 +327,7 @@ function showSetup(){ if(dateSetup) dateSetup.style.display='flex'; if(dateFixed
 
 function initDate(){
   const savedISO=localStorage.getItem('currentDate');
+  const sessionConfirmed = !!sessionStorage.getItem('dateConfirmed');
   const baseISO = savedISO || todayTehranISODate();
   const y=parseInt(baseISO.slice(0,4)), m=parseInt(baseISO.slice(5,7)), d=parseInt(baseISO.slice(8,10));
   const {jy,jm,jd}=g2j(y,m,d);
@@ -333,7 +339,17 @@ function initDate(){
   const jInput=document.getElementById('jalali-date');
   jInput.value = (savedISO? isoToJalali(savedISO): formatJalali(jy,jm,jd)).replace(/-/g,'/');
 
-  if(savedISO){ applyDate(savedISO); } else { if(dateBadge){ dateBadge.textContent = `${jy}-${String(jm).padStart(2,'0')}-${String(jd).padStart(2,'0')}`; } }
+  // If the user already confirmed a date in this session, keep the form hidden and apply stored date (if any)
+  if(sessionConfirmed){
+    if(savedISO){ applyDate(savedISO); }
+    else { // no saved date, but user dismissed form earlier this session — keep setup hidden and show default preview
+      if(dateBadge){ dateBadge.textContent = `${jy}-${String(jm).padStart(2,'0')}-${String(jd).padStart(2,'0')}`; }
+      if(dateFixed) dateFixed.style.display = 'none'; if(dateSetup) dateSetup.style.display='none';
+      const prev=document.getElementById('date-preview'); if(prev){ prev.style.display='none'; }
+    }
+  } else {
+    if(savedISO){ applyDate(savedISO); } else { if(dateBadge){ dateBadge.textContent = `${jy}-${String(jm).padStart(2,'0')}-${String(jd).padStart(2,'0')}`; } }
+  }
 }
 
 if(jYear) jYear.addEventListener('change',()=>fillDays(parseInt(jYear.value,10), parseInt(jMonth.value,10), Math.min(parseInt(jDay.value||'1',10), daysInJMonth(parseInt(jYear.value,10), parseInt(jMonth.value,10)))));
@@ -344,7 +360,7 @@ document.getElementById('btn-today').addEventListener('click',()=>{
   calState={jy,jm,jd,selected:{jy,jm,jd}}; renderCalendar();
   document.getElementById('jalali-date').value = formatJalali(jy,jm,jd).replace(/-/g,'/');
 });
-document.getElementById('btn-clear-date').addEventListener('click',()=>{ localStorage.removeItem('currentDate'); currentDate=null; showSetup(); showToast('تاریخ پاک شد'); });
+document.getElementById('btn-clear-date').addEventListener('click',()=>{ localStorage.removeItem('currentDate'); sessionStorage.removeItem('dateConfirmed'); currentDate=null; if(dateCardEl) dateCardEl.style.display='block'; showSetup(); showToast('تاریخ پاک شد'); });
 
 document.getElementById('cal-prev').addEventListener('click',()=>{ calState.jm--; if(calState.jm<1){calState.jm=12; calState.jy--;} renderCalendar(); });
 document.getElementById('cal-next').addEventListener('click',()=>{ calState.jm++; if(calState.jm>12){calState.jm=1; calState.jy++;} renderCalendar(); });
@@ -357,6 +373,11 @@ document.getElementById('confirm-date').addEventListener('click',()=>{
   const iso=jalaliToISO(v.jy,v.jm,v.jd); applyDate(iso);
 });
 document.getElementById('change-date').addEventListener('click',showSetup);
+
+// When user confirms date, set a session flag so the form stays hidden for this session
+document.getElementById('confirm-date').addEventListener('click',()=>{
+  try{ sessionStorage.setItem('dateConfirmed', '1'); if(dateCardEl) dateCardEl.style.display='none'; }catch(e){}
+});
 
 // Populate dropdowns for other tabs
 function populate(){
