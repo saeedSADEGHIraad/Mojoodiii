@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="fa" dir="rtl" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,31 +8,31 @@
 <link rel="apple-touch-icon" href="icons/icon-192.png">
 <link rel="icon" href="favicon.ico">
 <style>
-:root{--bg:#0f1115;--card:#121621;--muted:#9aa4b2;--text:#e7ecf3;--brand:#D4AF37;--brand-2:#b99728;--danger:#ef4444;--ring:0 0 0 3px rgba(212,175,55,.35);--radius:16px}
+:root{color-scheme:dark;--bg-top:#0c0e12;--bg-bottom:#0f1115;--card:#121621;--muted:#9aa4b2;--text:#e7ecf3;--brand:#D4AF37;--brand-2:#b99728;--danger:#ef4444;--ring:0 0 0 3px rgba(212,175,55,.35);--radius:16px}
+:root[data-theme='light']{color-scheme:light;--bg-top:#fbf7ec;--bg-bottom:#f4efe4;--card:#ffffff;--muted:#4b5565;--text:#1f2933}
 /* UI tokens */
 :root{--space-1:6px;--space-2:12px;--transition-fast:120ms;--transition-med:280ms;--btn-elev:0 8px 20px rgba(0,0,0,.25)}
-*{box-sizing:border-box;margin:0;padding:0}body{font-family:Vazirmatn,IRANSans,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:linear-gradient(180deg,#0c0e12,#0f1115);color:var(--text);line-height:1.75;padding-bottom:110px}
-.light{color-scheme:light}
-.light body{background:linear-gradient(180deg,#fbf7ec,#f4efe4);color:var(--text)}
-.light .appbar{background:linear-gradient(180deg,rgba(255,255,255,.92),rgba(255,255,255,.78));border-bottom:1px solid rgba(212,175,55,.25)}
-.light .logo{box-shadow:0 8px 26px rgba(212,175,55,.35)}
-.light .card{background:linear-gradient(180deg,rgba(255,255,255,.97),rgba(255,255,255,.9)),#fff;border:1px solid rgba(212,175,55,.2)}
-.light .date-card{background:linear-gradient(135deg,#fffdf5,#f7f1e6);border:1px solid rgba(212,175,55,.28)!important;box-shadow:0 10px 30px rgba(212,175,55,.2)}
-.light .select,.light .input{background:#fff;color:#1f2933;border:1px solid rgba(15,17,21,.12)}
-.light .inline-actions .i-btn{background:rgba(15,17,21,.06);color:#1f2933;border-color:rgba(15,17,21,.12)}
-.light .btn-ghost{border-color:rgba(15,17,21,.14);color:#1f2933}
-.light .tabs-inner{background:rgba(255,255,255,.92);border:1px solid rgba(212,175,55,.25)}
-.light .tab{color:#64748b}
-.light .tab.active{background:rgba(212,175,55,.18);color:var(--brand)}
-.light .item{background:#fff;border:1px solid rgba(212,175,55,.2)}
-.light .toast{background:#fff;color:#1f2933;border:1px solid rgba(212,175,55,.3)}
-.light .thumb{border:1px solid rgba(15,17,21,.12)}
-.light .viewer{background:rgba(15,17,21,.25)}
-.light .calendar{background:#fff;border:1px solid rgba(212,175,55,.22)}
-.light .cal-cell{background:#fff;border:1px solid rgba(212,175,55,.2)}
-.light .cal-cell.selected{color:#1f2933}
-.light .badge{background:rgba(212,175,55,.22);color:#8b6a10;border:1px solid rgba(212,175,55,.3)}
-.light .pill{background:rgba(212,175,55,.15);border:1px solid rgba(212,175,55,.25);color:#1f2933}
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:Vazirmatn,IRANSans,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:linear-gradient(180deg,var(--bg-top),var(--bg-bottom));color:var(--text);line-height:1.75;padding-bottom:110px}
+html[data-theme='light'] body{color:#1f2933}
+html[data-theme='light'] .appbar{background:linear-gradient(180deg,rgba(255,255,255,.92),rgba(255,255,255,.78));border-bottom:1px solid rgba(212,175,55,.25)}
+html[data-theme='light'] .logo{box-shadow:0 8px 26px rgba(212,175,55,.35)}
+html[data-theme='light'] .card{background:linear-gradient(180deg,rgba(255,255,255,.97),rgba(255,255,255,.9)),#fff;border:1px solid rgba(212,175,55,.2)}
+html[data-theme='light'] .date-card{background:linear-gradient(135deg,#fffdf5,#f7f1e6);border:1px solid rgba(212,175,55,.28)!important;box-shadow:0 10px 30px rgba(212,175,55,.2)}
+html[data-theme='light'] .select,html[data-theme='light'] .input{background:#fff;color:#1f2933;border:1px solid rgba(15,17,21,.12)}
+html[data-theme='light'] .inline-actions .i-btn{background:rgba(15,17,21,.06);color:#1f2933;border-color:rgba(15,17,21,.12)}
+html[data-theme='light'] .btn-ghost{border-color:rgba(15,17,21,.14);color:#1f2933}
+html[data-theme='light'] .tabs-inner{background:rgba(255,255,255,.92);border:1px solid rgba(212,175,55,.25)}
+html[data-theme='light'] .tab{color:#64748b}
+html[data-theme='light'] .tab.active{background:rgba(212,175,55,.18);color:var(--brand)}
+html[data-theme='light'] .item{background:#fff;border:1px solid rgba(212,175,55,.2)}
+html[data-theme='light'] .toast{background:#fff;color:#1f2933;border:1px solid rgba(212,175,55,.3)}
+html[data-theme='light'] .thumb{border:1px solid rgba(15,17,21,.12)}
+html[data-theme='light'] .viewer{background:rgba(15,17,21,.25)}
+html[data-theme='light'] .calendar{background:#fff;border:1px solid rgba(212,175,55,.22)}
+html[data-theme='light'] .cal-cell{background:#fff;border:1px solid rgba(212,175,55,.2)}
+html[data-theme='light'] .cal-cell.selected{color:#1f2933}
+html[data-theme='light'] .badge{background:rgba(212,175,55,.22);color:#8b6a10;border:1px solid rgba(212,175,55,.3)}
+html[data-theme='light'] .pill{background:rgba(212,175,55,.15);border:1px solid rgba(212,175,55,.25);color:#1f2933}
 .appbar{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,rgba(14,16,22,.8),rgba(14,16,22,.6));backdrop-filter:blur(10px);border-bottom:1px solid rgba(212,175,55,.18)}
 .appbar-inner{max-width:920px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .logo{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--brand),var(--brand-2));box-shadow:0 6px 24px rgba(212,175,55,.25)}
@@ -104,6 +104,23 @@
       const m = document.createElement('link');
       m.rel='manifest'; m.href='manifest.webmanifest'; document.head.appendChild(m);
     }
+  })();
+</script>
+<script>
+  (function(){
+    const STORAGE_KEY='ganjineh_theme';
+    const prefersLight=()=> window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+    let theme='dark';
+    try{
+      const stored=localStorage.getItem(STORAGE_KEY);
+      if(stored==='light' || stored==='dark'){ theme=stored; }
+      else if(prefersLight()){ theme='light'; }
+    }catch(e){
+      if(prefersLight()){ theme='light'; }
+    }
+    document.documentElement.dataset.theme=theme;
+    var meta=document.querySelector('meta[name="theme-color"]');
+    if(meta){ meta.setAttribute('content', theme==='light'?'#f6f1e4':'#0f1115'); }
   })();
 </script>
 </head>
@@ -290,30 +307,44 @@ const THEME_STORAGE_KEY='ganjineh_theme';
 const THEME_COLORS={dark:'#0f1115',light:'#f6f1e4'};
 function showToast(m){if(!toast) return;toast.textContent=m;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),1600)}
 function applyTheme(theme,{persist=true}={}){
-  const isLight=theme==='light';
-  document.documentElement.classList.toggle('light',isLight);
+  const normalized=theme==='light'?'light':'dark';
+  const isLight=normalized==='light';
+  document.documentElement.dataset.theme=normalized;
   if(themeMeta){ themeMeta.setAttribute('content', isLight?THEME_COLORS.light:THEME_COLORS.dark); }
   if(themeToggleBtn){
     themeToggleBtn.textContent=isLight?'حالت تاریک':'حالت روشن';
-    themeToggleBtn.setAttribute('aria-pressed', String(isLight));
+    themeToggleBtn.setAttribute('aria-pressed', isLight?'true':'false');
   }
   if(persist){
-    try{ localStorage.setItem(THEME_STORAGE_KEY, isLight?'light':'dark'); }catch(e){ console.warn('Theme preference not saved', e); }
+    try{ localStorage.setItem(THEME_STORAGE_KEY, normalized); }
+    catch(e){ console.warn('Theme preference not saved', e); }
   }
 }
-let savedTheme='dark';
+let savedTheme=document.documentElement.dataset.theme||'dark';
 try{
   const stored=localStorage.getItem(THEME_STORAGE_KEY);
-  if(stored=== 'light' || stored==='dark'){ savedTheme=stored; }
-  else if(window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches){ savedTheme='light'; }
+  if(stored==='light' || stored==='dark') savedTheme=stored;
+  else if(window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) savedTheme='light';
 }catch(e){ console.warn('Theme preference unavailable', e); }
 applyTheme(savedTheme,{persist:false});
 if(themeToggleBtn){
   themeToggleBtn.addEventListener('click',()=>{
-    const nextTheme=document.documentElement.classList.contains('light')?'dark':'light';
+    const nextTheme=document.documentElement.dataset.theme==='light'?'dark':'light';
     applyTheme(nextTheme);
     showToast(nextTheme==='light'?'حالت روشن فعال شد':'حالت تاریک فعال شد');
   });
+}
+if(window.matchMedia){
+  const media=window.matchMedia('(prefers-color-scheme: light)');
+  const handlePrefChange=ev=>{
+    let stored=null;
+    try{ stored=localStorage.getItem(THEME_STORAGE_KEY); }
+    catch(e){ stored=null; }
+    if(stored==='light' || stored==='dark') return;
+    applyTheme(ev.matches?'light':'dark',{persist:false});
+  };
+  if(typeof media.addEventListener==='function') media.addEventListener('change',handlePrefChange);
+  else if(typeof media.addListener==='function') media.addListener(handlePrefChange);
 }
 document.getElementById('print-btn').addEventListener('click',()=>window.print());
 // Open date form from appbar (allows reopening during same session)
