@@ -127,8 +127,9 @@ body{font-family:Vazirmatn,IRANSans,system-ui,-apple-system,Segoe UI,Roboto,sans
 
 /* decimal helper button (visible on small screens to aid mobile keyboards without decimal key) */
 .input-with-dec{display:flex;align-items:center;gap:8px}
-.dec-btn{display:none;border:none;background:rgba(255,255,255,.04);color:var(--text);padding:8px 10px;border-radius:10px;cursor:pointer}
-@media(max-width:640px){ .dec-btn{display:inline-flex} }
+.input-with-dec .input{flex:1;width:auto}
+.dec-btn{display:none;border:none;background:rgba(255,255,255,.04);color:var(--text);padding:8px 10px;border-radius:10px;cursor:pointer;flex:0 0 auto}
+@media(max-width:760px){ .dec-btn{display:inline-flex;z-index:6;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.06)} }
 </style>
 <script>
   // Inject manifest only on http(s) to avoid CORS on file://
@@ -509,8 +510,6 @@ function downscaleImage(file, maxW=1280, maxH=1280, quality=0.8){
   });
 }
 function addThumb(dataURL){
-// Normalize number-like input: convert Persian/Arabic digits and common separators to ASCII digits and dot
-function normalizeNumInput(s){ if(!s && s!==0) return ''; return String(s).replace(/[٬،\s]/g,'').replace(/[\u0660-\u0669]/g,c=>String(c.charCodeAt(0)-0x0660)).replace(/[\u06F0-\u06F9]/g,c=>String(c.charCodeAt(0)-0x06F0)).replace(/,/g,'.').replace(/٫/g,'.'); }
   const wrap=document.getElementById('bank-photos-preview');
   const img=document.createElement('img'); img.src=dataURL; img.alt='photo'; img.className='thumb';
   const del=document.createElement('button'); del.textContent='✕'; del.className='btn-ghost btn-sm thumb-del';
@@ -519,6 +518,8 @@ function normalizeNumInput(s){ if(!s && s!==0) return ''; return String(s).repla
   del.onclick=()=>{ wrap.removeChild(box); stagedPhotos=stagedPhotos.filter(p=>p!==dataURL); };
   wrap.append(box);
 }
+// Normalize number-like input: convert Persian/Arabic digits and common separators to ASCII digits and dot
+function normalizeNumInput(s){ if(!s && s!==0) return ''; return String(s).replace(/[٬،\s]/g,'').replace(/[\u0660-\u0669]/g,c=>String(c.charCodeAt(0)-0x0660)).replace(/[\u06F0-\u06F9]/g,c=>String(c.charCodeAt(0)-0x06F0)).replace(/,/g,'.').replace(/٫/g,'.'); }
 document.getElementById('btn-upload').onclick=()=>document.getElementById('file-upload').click();
 document.getElementById('btn-camera').onclick=()=>document.getElementById('file-camera').click();
 document.getElementById('file-upload').addEventListener('change', handleFiles, false);
