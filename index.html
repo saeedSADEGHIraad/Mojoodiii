@@ -598,6 +598,31 @@ document.getElementById('bank-opt-del').onclick=()=>{ const s=document.getElemen
 // Inputs
 document.getElementById('card-number').addEventListener('input',e=>{ const d=e.target.value.replace(/\D/g,'').slice(0,16); e.target.value=d.replace(/(\d{4})(?=\d)/g,'$1-'); });
 
+// Format numbers with thousand separators
+function formatWithCommas(n){ if(n==null||n==='') return ''; const s=String(n); return s.replace(/\B(?=(\d{3})+(?!\d))/g,','); }
+
+// Live-format cash amount input (thousand separators). Keeps caret at end for simplicity.
+const cashInput = document.getElementById('cash-amount');
+if(cashInput){ cashInput.addEventListener('input', (e)=>{
+  const raw = e.target.value;
+  // normalize Persian/Arabic digits then remove non-digits
+  const clean = normalizeNumInput(raw).replace(/\D/g,'');
+  if(clean===''){ e.target.value=''; return; }
+  e.target.value = formatWithCommas(clean);
+}); }
+
+// Save cash amount: store as integer rials and show formatted note
+const saveCashBtn = document.getElementById('save-cash');
+if(saveCashBtn){ saveCashBtn.addEventListener('click', ()=>{
+  const raw = (cashInput && cashInput.value) ? cashInput.value : '';
+  const clean = normalizeNumInput(raw).replace(/\D/g,'');
+  const amt = parseInt(clean||'0',10);
+  if(isNaN(amt)){ return alert('مبلغ معتبر نیست'); }
+  inventory.cash = amt; save();
+  const note = document.getElementById('cash-note'); if(note){ note.innerHTML = `<div class="muted-text">آخرین مبلغ ذخیره‌شده: <b>${formatWithCommas(amt)} ریال</b></div>`; }
+  showToast('مبلغ ذخیره شد');
+}); }
+
 // Tabs
 const tabBtns=[...document.querySelectorAll('.tab')];
 const panels=['gold','coins','cash','bank','daily'].map(x=>document.getElementById(x+'-tab'));
@@ -609,7 +634,7 @@ function renderDaily(){ const wrap=document.getElementById('daily-list'); wrap.t
   (inventory.gold||[]).forEach(g=>{ ensure(g.date||unk).gold+=Number(g.weightMg||0); });
   (inventory.coins||[]).forEach(c=>{ ensure(c.date||unk).coin+=Number(c.count||0); });
   (inventory.banks||[]).forEach(b=>{ ensure(b.date||unk).bank+=Number(b.amount||0); });
-  const dates=Object.keys(map); if(!dates.length){ wrap.innerHTML='<div style="color:#9aa4b2">فعلاً داده‌ای ثبت نشده است</div>'; return; }
+  const dates=Object.keys(map); if(!dates.length){ wrap.innerHTML='<div class="muted-text">فعلاً داده‌ای ثبت نشده است</div>'; return; }
   dates.sort((a,b)=> (a===unk?1:0)-(b===unk?1:0) || (a>b?-1:1));
   dates.forEach(d=>{ const box=document.createElement('div'); box.className='item';
     const left=document.createElement('div'); left.innerHTML=`<b>${d==='بدون تاریخ'?'بدون تاریخ':(weekdayFaFromISO(d)+' – '+isoToJalali(d))}</b>`;
