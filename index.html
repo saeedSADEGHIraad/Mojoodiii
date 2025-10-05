@@ -26,8 +26,9 @@ body{font-family:Vazirmatn,IRANSans,system-ui,-apple-system,Segoe UI,Roboto,sans
 .select,.input{width:100%;padding:12px 14px;border-radius:12px;background:#0b0e14;color:var(--text);border:1px solid rgba(255,255,255,.12)}
 .select-wrap .select{padding-inline-start:14px;padding-inline-end:72px} /* room for inline actions */
 .input:focus,.select:focus{outline:none;border-color:var(--brand);box-shadow:var(--ring)}
-.inline-actions{position:absolute;inset-inline-end:8px;top:50%;transform:translateY(-50%);display:flex;gap:6px} /* place actions on start or end depending on dir */
-.i-btn{border:none;border-radius:8px;padding:6px 8px;cursor:pointer;background:rgba(255,255,255,.06);color:var(--text);border:1px solid rgba(255,255,255,.12);font-size:.85rem}
+.inline-actions{position:absolute;inset-inline-end:8px;top:50%;transform:translateY(-50%);display:flex;gap:10px} /* place actions on start or end depending on dir */
+.inline-actions .i-btn{padding:8px 10px;min-width:44px;min-height:40px}
+.i-btn{border:none;border-radius:10px;padding:10px 12px;cursor:pointer;background:rgba(255,255,255,.06);color:var(--text);border:1px solid rgba(255,255,255,.12);font-size:1rem;min-height:44px;display:inline-flex;align-items:center;justify-content:center}
 .i-btn.primary{background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#232211;border:none;font-weight:800}
 .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,.14);color:var(--text)}.btn-sm{padding:8px 10px;font-size:.92rem}
 .pill{display:inline-flex;gap:6px;align-items:center;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12)}
@@ -128,7 +129,7 @@ body{font-family:Vazirmatn,IRANSans,system-ui,-apple-system,Segoe UI,Roboto,sans
 /* decimal helper button (visible on small screens to aid mobile keyboards without decimal key) */
 .input-with-dec{display:flex;align-items:center;gap:8px}
 .input-with-dec .input{flex:1;width:auto}
-.dec-btn{display:none;border:none;background:rgba(255,255,255,.04);color:var(--text);padding:8px 10px;border-radius:10px;cursor:pointer;flex:0 0 auto}
+.dec-btn{display:none;border:none;background:rgba(255,255,255,.04);color:var(--text);padding:10px 12px;border-radius:10px;cursor:pointer;flex:0 0 auto;min-width:44px;min-height:44px}
 @media(max-width:760px){ .dec-btn{display:inline-flex;z-index:6;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.06)} }
 </style>
 <script>
