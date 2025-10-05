@@ -473,16 +473,30 @@ function populate(){
 const toMg=g=>Math.round(Number(g)*1000), mgToStr=mg=>(Number(mg)/1000).toFixed(3);
 function renderGold(){ const wrap=document.getElementById('gold-items-list'); wrap.textContent='';
   if(!(inventory.gold||[]).length){ wrap.innerHTML='<div class="muted-text">هنوز آیتمی ثبت نشده</div>'; return; }
-  (inventory.gold||[]).forEach((it)=>{ const row=document.createElement('div'); row.className='item';
+  (inventory.gold||[]).forEach((it, idx)=>{ const row=document.createElement('div'); row.className='item';
     const left=document.createElement('div'); left.innerHTML=`<b>${it.karat} عیار – ${mgToStr(it.weightMg)} گرم</b><div class="meta">${it.date?isoToJalali(it.date):'بدون تاریخ'}</div>`;
-    row.append(left,document.createElement('div')); wrap.append(row); });
+    const actions=document.createElement('div');
+    // Edit button
+    const edit=document.createElement('button'); edit.className='i-btn btn-sm'; edit.textContent='ویرایش'; edit.onclick=()=>{ editGold(idx); };
+    // Delete button
+    const del=document.createElement('button'); del.className='i-btn btn-sm'; del.textContent='حذف'; del.onclick=()=>{ if(confirm('آیا از حذف این مورد مطمئن هستید؟')){ inventory.gold.splice(idx,1); save(); renderGold(); renderDaily(); showToast('آیتم حذف شد'); } };
+    actions.append(edit, del);
+    row.append(left, actions); wrap.append(row); });
 }
+
+function editGold(idx){ const it=inventory.gold[idx]; if(!it) return; const newK = prompt('عیار را وارد کنید:', it.karat); if(newK===null) return; const rawW = prompt('وزن (گرم) را وارد کنید (مثال: 12.500):', (Number(it.weightMg)/1000).toFixed(3)); if(rawW===null) return; const w = parseFloat(normalizeNumInput(rawW)); if(isNaN(w) || w<=0) return alert('وزن معتبر نیست'); it.karat = newK.trim(); it.weightMg = Math.round(w*1000); save(); renderGold(); renderDaily(); showToast('آیتم ویرایش شد'); }
 function renderCoin(){ const wrap=document.getElementById('coin-items-list'); wrap.textContent='';
   if(!(inventory.coins||[]).length){ wrap.innerHTML='<div class="muted-text">هنوز آیتمی ثبت نشده</div>'; return; }
-  (inventory.coins||[]).forEach((it)=>{ const row=document.createElement('div'); row.className='item';
+  (inventory.coins||[]).forEach((it, idx)=>{ const row=document.createElement('div'); row.className='item';
     const left=document.createElement('div'); left.innerHTML=`<b>${it.type} – ${it.count} عدد</b><div class="meta">${it.date?isoToJalali(it.date):'بدون تاریخ'}</div>`;
-    row.append(left,document.createElement('div')); wrap.append(row); });
+    const actions=document.createElement('div');
+    const edit=document.createElement('button'); edit.className='i-btn btn-sm'; edit.textContent='ویرایش'; edit.onclick=()=>{ editCoin(idx); };
+    const del=document.createElement('button'); del.className='i-btn btn-sm'; del.textContent='حذف'; del.onclick=()=>{ if(confirm('آیا از حذف این مورد مطمئن هستید؟')){ inventory.coins.splice(idx,1); save(); renderCoin(); renderDaily(); showToast('آیتم حذف شد'); } };
+    actions.append(edit, del);
+    row.append(left, actions); wrap.append(row); });
 }
+
+function editCoin(idx){ const it=inventory.coins[idx]; if(!it) return; const newType = prompt('نوع سکه را وارد کنید:', it.type); if(newType===null) return; const rawC = prompt('تعداد را وارد کنید:', String(it.count)); if(rawC===null) return; const c = parseInt(normalizeNumInput(rawC).replace(/\./g,''),10); if(isNaN(c) || c<=0) return alert('تعداد معتبر نیست'); it.type = newType.trim(); it.count = c; save(); renderCoin(); renderDaily(); showToast('آیتم ویرایش شد'); }
 
 // BANK photos
 let stagedPhotos=[]; const MAX_PHOTOS=3;
@@ -551,17 +565,23 @@ if(decBtn){ decBtn.addEventListener('click',()=>{
 document.getElementById('photo-viewer').addEventListener('click',e=>{ if(e.target.id==='photo-viewer') e.currentTarget.classList.remove('show'); });
 function renderBank(){ const wrap=document.getElementById('bank-cards-list'); wrap.textContent='';
   if(!(inventory.banks||[]).length){ wrap.innerHTML='<div class="muted-text">هنوز آیتمی ثبت نشده</div>'; return; }
-  (inventory.banks||[]).forEach((it)=>{
+  (inventory.banks||[]).forEach((it, idx)=>{
     const row=document.createElement('div'); row.className='item';
     const left=document.createElement('div');
-  let thumbs=''; (it.photos||[]).forEach((p,idx)=>{ thumbs+=`<img src="${p}" alt="photo ${idx+1}" class="thumb thumb-offset">`; });
+    let thumbs=''; (it.photos||[]).forEach((p,pi)=>{ thumbs+=`<img src="${p}" alt="photo ${pi+1}" class="thumb thumb-offset">`; });
     left.innerHTML=`<b>${it.name}</b>
       <div class="meta">${it.cardNumber?('کارت: '+it.cardNumber+' – '):''}${it.date?isoToJalali(it.date):'بدون تاریخ'} | <b>${String(it.amount).replace(/\B(?=(\d{3})+(?!\d))/g,',')} ریال</b></div>
       <div class="thumb-wrap">${thumbs||''}</div>`;
-    row.append(left,document.createElement('div')); wrap.append(row);
+    const actions=document.createElement('div');
+    const edit=document.createElement('button'); edit.className='i-btn btn-sm'; edit.textContent='ویرایش'; edit.onclick=()=>{ editBank(idx); };
+    const del=document.createElement('button'); del.className='i-btn btn-sm'; del.textContent='حذف'; del.onclick=()=>{ if(confirm('آیا از حذف این رکورد بانکی مطمئن هستید؟')){ inventory.banks.splice(idx,1); save(); renderBank(); renderDaily(); showToast('رکورد حذف شد'); } };
+    actions.append(edit, del);
+    row.append(left, actions); wrap.append(row);
   });
   wrap.querySelectorAll('img.thumb').forEach(img=>img.addEventListener('click',()=>openViewer(img.src)));
 }
+
+function editBank(idx){ const it=inventory.banks[idx]; if(!it) return; const newName = prompt('نام بانک را وارد کنید:', it.name); if(newName===null) return; const newCard = prompt('شماره کارت (خالی برای حذف):', it.cardNumber||''); if(newCard===null) return; const rawAmt = prompt('مبلغ (ریال):', String(it.amount)); if(rawAmt===null) return; const amt=parseInt(normalizeNumInput(rawAmt).replace(/\D/g,''),10); if(isNaN(amt) || amt<0) return alert('مبلغ معتبر نیست'); it.name = newName.trim(); it.cardNumber = newCard.trim(); it.amount = amt; save(); renderBank(); renderDaily(); showToast('رکورد ویرایش شد'); }
 
 // Record add inside selects
 document.getElementById('gold-record-add').onclick=()=>{
