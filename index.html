@@ -5,14 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>گنجینه – مدیریت موجودی طلافروشی</title>
 <meta name="theme-color" content="#D4AF37">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
 <link rel="icon" href="favicon.ico">
 <style>
 :root{--bg:#0f1115;--card:#121621;--muted:#9aa4b2;--text:#e7ecf3;--brand:#D4AF37;--brand-2:#b99728;--danger:#ef4444;--ring:0 0 0 3px rgba(212,175,55,.35);--radius:16px}
 /* UI tokens */
 :root{--space-1:6px;--space-2:12px;--transition-fast:120ms;--transition-med:280ms;--btn-elev:0 8px 20px rgba(0,0,0,.25)}
-*{box-sizing:border-box;margin:0;padding:0}body{font-family:Vazirmatn,IRANSans,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:linear-gradient(180deg,#0c0e12,#0f1115);color:var(--text);line-height:1.75;padding-bottom:110px}
-.appbar{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,rgba(14,16,22,.8),rgba(14,16,22,.6));backdrop-filter:blur(10px);border-bottom:1px solid rgba(212,175,55,.18)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{color-scheme: light dark}
+body{font-family:Vazirmatn,IRANSans,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:linear-gradient(180deg,#0c0e12,#0f1115);color:var(--text);line-height:1.75;padding-bottom:110px}
+.appbar{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,rgba(14,16,22,.8),rgba(14,16,22,.6));-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid rgba(212,175,55,.18)}
 .appbar-inner{max-width:920px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .logo{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--brand),var(--brand-2));box-shadow:0 6px 24px rgba(212,175,55,.25)}
 .container{max-width:920px;margin:0 auto;padding:16px}
@@ -31,7 +34,7 @@
 .list{display:flex;flex-direction:column;gap:10px;margin-top:10px}
 .item{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;background:#0d1018;border:1px solid rgba(255,255,255,.08);padding:12px;border-radius:12px}
 .tabs{position:fixed;bottom:10px;left:0;right:0;display:flex;justify-content:center;pointer-events:none}
-.tabs-inner{pointer-events:auto;display:flex;gap:6px;background:rgba(10,12,18,.7);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.12);padding:8px;border-radius:14px;margin:0 auto}
+.tabs-inner{pointer-events:auto;display:flex;gap:6px;background:rgba(10,12,18,.7);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.12);padding:8px;border-radius:14px;margin:0 auto}
 .tab{background:transparent;color:#9aa4b2;border:none;border-radius:10px;padding:10px 12px;cursor:pointer}.tab.active{background:rgba(212,175,55,.12);color:var(--brand);font-weight:800}
 .toast{position:fixed;top:80px;right:16px;background:#0e121b;border:1px solid rgba(255,255,255,.12);color:#fff;padding:12px 14px;border-radius:12px;opacity:0;transform:translateY(-10px);transition:all .2s ease;z-index:60}
 .toast.show{opacity:1;transform:translateY(0)}
@@ -42,6 +45,29 @@
 .viewer.show{display:flex}
 .badge{display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border-radius:12px;background:rgba(212,175,55,.12);color:var(--brand);border:1px solid rgba(212,175,55,.25);font-size:.85rem}
 .help-note{color:#9aa4b2;font-size:.9rem;margin-top:6px}
+
+/* utility and layout classes to replace inline styles */
+.header-left{display:flex;align-items:center;gap:12px}
+.app-title{font-weight:800}
+.app-subtitle{color:#9aa4b2;font-size:.86rem}
+.appbar-actions{display:flex;gap:8px;align-items:center}
+.section-heading{font-size:1.05rem;font-weight:800}
+.brand{color:var(--brand)}
+.cal-title{font-weight:800}
+.initially-hidden{display:none}
+.muted-text{color:#9aa4b2}
+.thumb-offset{margin-left:6px;cursor:pointer}
+.mt-8{margin-top:8px}
+.mt-12{margin-top:12px}
+.between-row{display:flex;align-items:center;justify-content:space-between}
+.mb-10{margin-bottom:10px}
+.mb-8{margin-bottom:8px}
+.d-none{display:none}
+
+/* daily toolbar spacing and thumb helpers (replace inline styles) */
+#daily-toolbar{gap:8px;margin:0 0 8px 0;display:flex;align-items:center}
+.thumb-box{display:inline-flex;align-items:center;gap:6px}
+.thumb-del{margin-inline-start:4px}
 
 /* v13.6 date card */
 .date-card{background:linear-gradient(135deg,#1c1f27,#121621);border:1px solid rgba(212,175,55,.35)!important;border-radius:18px;box-shadow:0 6px 24px rgba(0,0,0,.35)}
@@ -74,6 +100,35 @@
 #date-chip{display:none;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:rgba(212,175,55,.08);color:var(--brand);border:1px solid rgba(212,175,55,.18);cursor:pointer;font-weight:700}
 #open-date-btn svg{margin-inline-start:6px;opacity:.95;transform:translateY(1px)}
 @media(max-width:480px){.cal-cell{padding:12px 0;min-height:48px}}
+/* Mobile optimizations */
+@media(max-width:640px){
+  body{padding-bottom:140px}
+  .appbar-inner{padding:10px 12px}
+  .app-title{font-size:1.05rem}
+  .app-subtitle{display:none}
+  .appbar-actions{gap:6px}
+  #date-chip{display:none} /* keep chip hidden on small screens to save space */
+  .container{padding:12px}
+  .card{padding:14px}
+  .row{gap:8px}
+  .col{flex:1 1 100%} /* stack columns */
+  .select,.input{padding:14px 16px;font-size:1rem}
+  .i-btn,.btn-ghost{padding:10px 12px;font-size:1rem}
+  .btn-sm{padding:10px 12px}
+  .cal-cell{padding:14px 0;min-height:54px;font-size:1rem}
+  .thumb{width:72px;height:72px}
+  .thumb-wrap{gap:10px}
+  .tabs{bottom:6px}
+  .tabs-inner{padding:6px}
+  #daily-toolbar{flex-wrap:wrap}
+  .inline-actions{inset-inline-end:6px}
+  .pill{padding:8px 12px}
+}
+
+/* decimal helper button (visible on small screens to aid mobile keyboards without decimal key) */
+.input-with-dec{display:flex;align-items:center;gap:8px}
+.dec-btn{display:none;border:none;background:rgba(255,255,255,.04);color:var(--text);padding:8px 10px;border-radius:10px;cursor:pointer}
+@media(max-width:640px){ .dec-btn{display:inline-flex} }
 </style>
 <script>
   // Inject manifest only on http(s) to avoid CORS on file://
@@ -89,11 +144,11 @@
 <body>
 <header class="appbar">
   <div class="appbar-inner">
-    <div style="display:flex;align-items:center;gap:12px">
+    <div class="header-left">
       <div class="logo" aria-hidden="true"></div>
-      <div><div style="font-weight:800">گنجینه</div><div style="color:#9aa4b2;font-size:.86rem">مدیریت موجودی طلافروشی</div></div>
+      <div><div class="app-title">گنجینه</div><div class="app-subtitle">مدیریت موجودی طلافروشی</div></div>
     </div>
-    <div style="display:flex;gap:8px;align-items:center">
+    <div class="appbar-actions">
       <button class="btn-ghost btn-sm" id="print-btn">چاپ</button>
       <button class="btn-ghost btn-sm" id="open-date-btn" title="نمایش/تغییر تاریخ">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M7 11h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.4"/></svg>
@@ -110,7 +165,7 @@
     <!-- DATE (enhanced) -->
     <section class="card date-card" aria-labelledby="date-title">
       <div class="date-head">
-        <div class="date-title"><span class="emoji">📅</span><h2 id="date-title" style="font-size:1.05rem">تاریخ ورود داده (هجری شمسی)</h2></div>
+    <div class="date-title"><span class="emoji">📅</span><h2 id="date-title" class="section-heading">تاریخ ورود داده (هجری شمسی)</h2></div>
         <span class="pill"><span id="weekday-pill">—</span></span>
       </div>
       <div class="jalali-input">
@@ -124,7 +179,7 @@
             <button class="i-btn" id="cal-prev">‹</button>
             <button class="i-btn" id="cal-next">›</button>
           </div>
-          <div id="cal-title" style="font-weight:800"></div>
+          <div id="cal-title" class="cal-title"></div>
           <div></div>
         </div>
         <div class="cal-grid" id="cal-weekdays"></div>
@@ -147,10 +202,10 @@
         </div>
         <div class="col"><label for="j-day">روز</label><select id="j-day" class="select"></select></div>
       </div>
-      <div id="date-fixed" class="row" style="display:none">
-        <div class="col"><div style="color:#9aa4b2">ثبت‌شده: <b id="current-date-jalali">—</b> <span id="current-date-greg" class="meta"></span></div></div>
+      <div id="date-fixed" class="row initially-hidden">
+        <div class="col"><div class="muted-text">ثبت‌شده: <b id="current-date-jalali">—</b> <span id="current-date-greg" class="meta"></span></div></div>
       </div>
-      <div class="date-preview" id="date-preview" style="display:none">
+      <div class="date-preview" id="date-preview" class="initially-hidden">
         <span class="badge" id="weekday-badge">—</span>
         <span id="preview-text">—</span>
       </div>
@@ -158,27 +213,27 @@
 
     <!-- GOLD -->
     <section class="card" id="gold-tab">
-      <h2 style="font-size:1.05rem;color:var(--brand);font-weight:800">طلای مستعمل</h2>
-      <div class="row" style="margin-top:8px">
+  <h2 class="section-heading brand">طلای مستعمل</h2>
+  <div class="row mt-8">
         <div class="col select-wrap">
-          <select class="select" id="gold-karat"><option value="">انتخاب عیار</option></select>
+          <select class="select" id="gold-karat" aria-label="عیار طلا"><option value="">انتخاب عیار</option></select>
           <div class="inline-actions">
             <button class="i-btn" id="gold-opt-add">افزودن</button>
             <button class="i-btn" id="gold-opt-del">حذف</button>
             <button class="i-btn primary" id="gold-record-add">ثبت</button>
           </div>
         </div>
-        <div class="col"><input type="text" class="input" id="gold-weight" placeholder="وزن (گرم) مثال: 12.500" inputmode="decimal"></div>
+  <div class="col"><div class="input-with-dec"><input type="text" class="input" id="gold-weight" placeholder="وزن (گرم) مثال: 12.500" inputmode="decimal" pattern="[0-9\u06F0-\u06F9\u0660-\u0669]*[.,]?[0-9\u06F0-\u06F9\u0660-\u0669]*" lang="fa-IR"><button type="button" class="dec-btn" id="dec-insert" aria-hidden="true">.</button></div></div>
       </div>
-      <div class="list" id="gold-items-list"><div style="color:#9aa4b2">هنوز آیتمی ثبت نشده</div></div>
+  <div class="list" id="gold-items-list"><div class="muted-text">هنوز آیتمی ثبت نشده</div></div>
     </section>
 
     <!-- COINS -->
     <section class="card" id="coins-tab">
-      <h2 style="font-size:1.05rem;color:var(--brand);font-weight:800">سکه‌ها</h2>
-      <div class="row" style="margin-top:8px">
+  <h2 class="section-heading brand">سکه‌ها</h2>
+  <div class="row mt-8">
         <div class="col select-wrap">
-          <select class="select" id="coin-type"><option value="">انتخاب نوع سکه</option></select>
+          <select class="select" id="coin-type" aria-label="نوع سکه"><option value="">انتخاب نوع سکه</option></select>
           <div class="inline-actions">
             <button class="i-btn" id="coin-opt-add">افزودن</button>
             <button class="i-btn" id="coin-opt-del">حذف</button>
@@ -187,28 +242,28 @@
         </div>
         <div class="col"><input type="text" class="input" id="coin-count" placeholder="تعداد" inputmode="numeric"></div>
       </div>
-      <div class="list" id="coin-items-list"><div style="color:#9aa4b2">هنوز آیتمی ثبت نشده</div></div>
+  <div class="list" id="coin-items-list"><div class="muted-text">هنوز آیتمی ثبت نشده</div></div>
     </section>
 
     <!-- CASH -->
     <section class="card" id="cash-tab">
-      <h2 style="font-size:1.05rem;color:var(--brand);font-weight:800">نقدینگی</h2>
-      <div class="row" style="margin-top:8px">
+  <h2 class="section-heading brand">نقدینگی</h2>
+  <div class="row mt-8">
         <div class="col"><input type="text" class="input" id="cash-amount" placeholder="مبلغ نقدی (ریال)" inputmode="numeric"></div>
         <button class="i-btn primary" id="save-cash" type="button">ذخیره</button>
       </div>
-      <div class="list" id="cash-note"><div style="color:#9aa4b2">آخرین مبلغ ذخیره‌شده در بالا نمایش داده می‌شود.</div></div>
+  <div class="list" id="cash-note"><div class="muted-text">آخرین مبلغ ذخیره‌شده در بالا نمایش داده می‌شود.</div></div>
     </section>
 
     <!-- BANK -->
     <section class="card" id="bank-tab">
-      <div style="display:flex;align-items:center;justify-content:space-between">
-        <h2 style="font-size:1.05rem;color:var(--brand);font-weight:800">حساب بانکی</h2>
+      <div class="between-row">
+        <h2 class="section-heading brand">حساب بانکی</h2>
         <span class="badge">پیوست عکس رسید/کارت</span>
       </div>
-      <div class="row" style="margin-top:8px">
+      <div class="row mt-8">
         <div class="col select-wrap">
-          <select class="select" id="bank-name"><option value="">انتخاب بانک</option></select>
+          <select class="select" id="bank-name" aria-label="نام بانک"><option value="">انتخاب بانک</option></select>
           <div class="inline-actions">
             <button class="i-btn" id="bank-opt-add">افزودن</button>
             <button class="i-btn" id="bank-opt-del">حذف</button>
@@ -218,32 +273,33 @@
         <div class="col"><input type="text" class="input" id="card-number" placeholder="شماره کارت (اختیاری)" inputmode="numeric"></div>
         <div class="col"><input type="text" class="input" id="bank-amount" placeholder="مبلغ (ریال)" inputmode="numeric"></div>
       </div>
-      <div class="row" style="margin-top:8px">
-        <input id="file-upload" type="file" accept="image/*" style="display:none">
-        <input id="file-camera" type="file" accept="image/*" capture="environment" style="display:none">
+      <div class="row mt-8">
+  <input id="file-upload" type="file" accept="image/*" class="d-none">
+  <!-- `capture` hint is intentionally present to open rear camera on supported mobile browsers; desktop browsers ignore it -->
+  <input id="file-camera" type="file" accept="image/*" capture="environment" class="d-none">
         <button class="i-btn" id="btn-upload">آپلود عکس</button>
         <button class="i-btn" id="btn-camera">گرفتن عکس</button>
       </div>
       <div class="thumb-wrap" id="bank-photos-preview"></div>
       <div class="help-note">حداکثر ۳ عکس برای هر رکورد. تصاویر به‌صورت آفلاین در مرورگر ذخیره می‌شوند.</div>
-      <div class="list" id="bank-cards-list" style="margin-top:12px"><div style="color:#9aa4b2">هنوز آیتمی ثبت نشده</div></div>
+  <div class="list" id="bank-cards-list mt-12"><div class="muted-text">هنوز آیتمی ثبت نشده</div></div>
     </section>
 
     <!-- DAILY -->
     <section class="card" id="daily-tab">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-        <h2 style="font-size:1.05rem;color:var(--brand);font-weight:800">گزارش روزانه</h2>
+      <div class="between-row mb-10">
+        <h2 class="section-heading brand">گزارش روزانه</h2>
         <div class="pill" id="date-badge">—</div>
       </div>
-      <div id="daily-toolbar" class="row" style="gap:8px;margin:0 0 8px 0">
+  <div id="daily-toolbar" class="row">
         <button class="btn-ghost btn-sm" id="btn-export-json">خروجی JSON</button>
         <button class="btn-ghost btn-sm" id="btn-export-csv">خروجی CSV</button>
         <label class="btn-ghost btn-sm" for="import-file">ورود از فایل</label>
-        <input id="import-file" type="file" accept=".json,.csv" style="display:none">
+  <input id="import-file" type="file" accept=".json,.csv" class="d-none">
         <button class="btn-ghost btn-sm" id="btn-undo">واگرد</button>
         <button class="btn-ghost btn-sm" id="btn-help">راهنما</button>
       </div>
-      <div id="daily-list"><div style="color:#9aa4b2">فعلاً داده‌ای ثبت نشده است</div></div>
+  <div id="daily-list"><div class="muted-text">فعلاً داده‌ای ثبت نشده است</div></div>
     </section>
   </div>
 </main>
@@ -297,18 +353,7 @@ const currentDateJ=document.getElementById('current-date-jalali');
 const currentDateG=document.getElementById('current-date-greg');
 const dateBadge=document.getElementById('date-badge');
 
-function save(){
-  try{
-    const prev=localStorage.getItem('inventory');
-    if(prev!==null){
-      localStorage.setItem('inventory_backup', prev);
-    }
-    localStorage.setItem('inventory',JSON.stringify(inventory));
-  }catch(err){
-    console.error('خطا در ذخیره‌سازی اطلاعات', err);
-    showToast('ذخیره‌سازی اطلاعات با خطا مواجه شد');
-  }
-}
+function save(){ localStorage.setItem('inventory',JSON.stringify(inventory)); }
 function load(){ const s=localStorage.getItem('inventory'); if(s){ try{ inventory={...inventory,...JSON.parse(s)} }catch{} } }
 
 function isJLeap(jy){const g=j2g(jy,12,30);const back=g2j(g.gy,g.gm,g.gd);return back.jd===30&&back.jm===12;}
@@ -426,13 +471,13 @@ function populate(){
 // Render lists (no delete buttons per your preference)
 const toMg=g=>Math.round(Number(g)*1000), mgToStr=mg=>(Number(mg)/1000).toFixed(3);
 function renderGold(){ const wrap=document.getElementById('gold-items-list'); wrap.textContent='';
-  if(!(inventory.gold||[]).length){ wrap.innerHTML='<div style="color:#9aa4b2">هنوز آیتمی ثبت نشده</div>'; return; }
+  if(!(inventory.gold||[]).length){ wrap.innerHTML='<div class="muted-text">هنوز آیتمی ثبت نشده</div>'; return; }
   (inventory.gold||[]).forEach((it)=>{ const row=document.createElement('div'); row.className='item';
     const left=document.createElement('div'); left.innerHTML=`<b>${it.karat} عیار – ${mgToStr(it.weightMg)} گرم</b><div class="meta">${it.date?isoToJalali(it.date):'بدون تاریخ'}</div>`;
     row.append(left,document.createElement('div')); wrap.append(row); });
 }
 function renderCoin(){ const wrap=document.getElementById('coin-items-list'); wrap.textContent='';
-  if(!(inventory.coins||[]).length){ wrap.innerHTML='<div style="color:#9aa4b2">هنوز آیتمی ثبت نشده</div>'; return; }
+  if(!(inventory.coins||[]).length){ wrap.innerHTML='<div class="muted-text">هنوز آیتمی ثبت نشده</div>'; return; }
   (inventory.coins||[]).forEach((it)=>{ const row=document.createElement('div'); row.className='item';
     const left=document.createElement('div'); left.innerHTML=`<b>${it.type} – ${it.count} عدد</b><div class="meta">${it.date?isoToJalali(it.date):'بدون تاریخ'}</div>`;
     row.append(left,document.createElement('div')); wrap.append(row); });
@@ -464,10 +509,12 @@ function downscaleImage(file, maxW=1280, maxH=1280, quality=0.8){
   });
 }
 function addThumb(dataURL){
+// Normalize number-like input: convert Persian/Arabic digits and common separators to ASCII digits and dot
+function normalizeNumInput(s){ if(!s && s!==0) return ''; return String(s).replace(/[٬،\s]/g,'').replace(/[\u0660-\u0669]/g,c=>String(c.charCodeAt(0)-0x0660)).replace(/[\u06F0-\u06F9]/g,c=>String(c.charCodeAt(0)-0x06F0)).replace(/,/g,'.').replace(/٫/g,'.'); }
   const wrap=document.getElementById('bank-photos-preview');
   const img=document.createElement('img'); img.src=dataURL; img.alt='photo'; img.className='thumb';
-  const del=document.createElement('button'); del.textContent='✕'; del.className='btn-ghost btn-sm'; del.style.marginInlineStart='4px';
-  const box=document.createElement('div'); box.style.display='inline-flex'; box.style.alignItems='center'; box.append(img,del);
+  const del=document.createElement('button'); del.textContent='✕'; del.className='btn-ghost btn-sm thumb-del';
+  const box=document.createElement('div'); box.className='thumb-box'; box.append(img,del);
   img.onclick=()=>openViewer(dataURL);
   del.onclick=()=>{ wrap.removeChild(box); stagedPhotos=stagedPhotos.filter(p=>p!==dataURL); };
   wrap.append(box);
@@ -491,13 +538,22 @@ function openViewer(src){
   const v=document.getElementById('photo-viewer');
   v.querySelector('img').src=src; v.classList.add('show');
 }
+// decimal helper: insert '.' at caret for inputs that may not have a decimal key on iOS keyboard
+const decBtn=document.getElementById('dec-insert');
+if(decBtn){ decBtn.addEventListener('click',()=>{
+  const inp=document.getElementById('gold-weight'); if(!inp) return;
+  const start=inp.selectionStart||inp.value.length; const end=inp.selectionEnd||start;
+  const before=inp.value.slice(0,start); const after=inp.value.slice(end);
+  inp.value = before + '.' + after; const pos = before.length+1; inp.setSelectionRange(pos,pos); inp.focus();
+  showToast('علائم اعشار درج شد');
+}); }
 document.getElementById('photo-viewer').addEventListener('click',e=>{ if(e.target.id==='photo-viewer') e.currentTarget.classList.remove('show'); });
 function renderBank(){ const wrap=document.getElementById('bank-cards-list'); wrap.textContent='';
-  if(!(inventory.banks||[]).length){ wrap.innerHTML='<div style="color:#9aa4b2">هنوز آیتمی ثبت نشده</div>'; return; }
+  if(!(inventory.banks||[]).length){ wrap.innerHTML='<div class="muted-text">هنوز آیتمی ثبت نشده</div>'; return; }
   (inventory.banks||[]).forEach((it)=>{
     const row=document.createElement('div'); row.className='item';
     const left=document.createElement('div');
-    let thumbs=''; (it.photos||[]).forEach((p,idx)=>{ thumbs+=`<img src="${p}" alt="photo ${idx+1}" class="thumb" style="margin-left:6px;cursor:pointer">`; });
+  let thumbs=''; (it.photos||[]).forEach((p,idx)=>{ thumbs+=`<img src="${p}" alt="photo ${idx+1}" class="thumb thumb-offset">`; });
     left.innerHTML=`<b>${it.name}</b>
       <div class="meta">${it.cardNumber?('کارت: '+it.cardNumber+' – '):''}${it.date?isoToJalali(it.date):'بدون تاریخ'} | <b>${String(it.amount).replace(/\B(?=(\d{3})+(?!\d))/g,',')} ریال</b></div>
       <div class="thumb-wrap">${thumbs||''}</div>`;
@@ -509,19 +565,19 @@ function renderBank(){ const wrap=document.getElementById('bank-cards-list'); wr
 // Record add inside selects
 document.getElementById('gold-record-add').onclick=()=>{
   if(!currentDate) return alert('ابتدا تاریخ را تعیین کنید');
-  const k=document.getElementById('gold-karat').value; const w=parseFloat(document.getElementById('gold-weight').value);
+  const k=document.getElementById('gold-karat').value; const rawW=document.getElementById('gold-weight').value; const w=parseFloat(normalizeNumInput(rawW));
   if(k && !isNaN(w) && w>0){ inventory.gold.push({karat:k,weightMg:Math.round(w*1000),date:currentDate}); save(); renderGold(); renderDaily(); showToast('طلای جدید ثبت شد'); } else alert('اطلاعات کامل نیست');
 };
 document.getElementById('coin-record-add').onclick=()=>{
   if(!currentDate) return alert('ابتدا تاریخ را تعیین کنید');
-  const t=document.getElementById('coin-type').value; const c=parseInt(document.getElementById('coin-count').value.replace(/,/g,''),10);
+  const t=document.getElementById('coin-type').value; const c=parseInt(normalizeNumInput(document.getElementById('coin-count').value).replace(/\./g,''),10);
   if(t && !isNaN(c) && c>0){ inventory.coins.push({type:t,count:c,date:currentDate}); save(); renderCoin(); renderDaily(); showToast('سکه ثبت شد'); } else alert('اطلاعات کامل نیست');
 };
 document.getElementById('bank-record-add').onclick=()=>{
   if(!currentDate) return alert('ابتدا تاریخ را تعیین کنید');
   const name=document.getElementById('bank-name').value;
   const card=document.getElementById('card-number').value;
-  const amount=parseInt(document.getElementById('bank-amount').value.replace(/,/g,''),10);
+  const amount=parseInt(normalizeNumInput(document.getElementById('bank-amount').value).replace(/\./g,''),10);
   if(!name || isNaN(amount) || amount<0) return alert('بانک و مبلغ را صحیح وارد کنید');
   const photos=[...stagedPhotos]; stagedPhotos=[]; document.getElementById('bank-photos-preview').textContent='';
   inventory.banks.push({name,cardNumber:card,amount,date:currentDate,photos});
@@ -580,6 +636,9 @@ document.getElementById('import-file').addEventListener('change',async (e)=>{
 });
 document.getElementById('btn-undo').onclick=()=>{ const s=localStorage.getItem('inventory_backup'); if(!s) return alert('پشتیبان موجود نیست'); inventory=JSON.parse(s); save(); populate(); renderGold(); renderCoin(); renderBank(); renderDaily(); showToast('بازگردانی شد'); };
 document.getElementById('btn-help').onclick=()=>alert('راهنما: تاریخ شمسی را از ورودی یا تقویم انتخاب کنید؛ سپس تأیید تاریخ را بزنید. در هر تب، دکمه‌های افزودن/حذف گزینه‌ها داخل همان کشویی قرار گرفته‌اند. در تب بانک می‌توانید تا ۳ عکس پیوست کنید.');
+
+// Backup hook
+const _save=save; save=function(){ localStorage.setItem('inventory_backup', JSON.stringify(inventory)); _save(); };
 
 // SW guard for file://
 const IS_HTTP = location.protocol.startsWith('http');
