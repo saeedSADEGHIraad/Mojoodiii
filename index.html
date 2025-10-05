@@ -7,169 +7,100 @@
 <meta name="theme-color" content="#D4AF37">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
-<link rel="icon" href="favicon.ico">
-<style>
-:root{--bg:#0f1115;--card:#121621;--muted:#9aa4b2;--text:#e7ecf3;--brand:#D4AF37;--brand-2:#b99728;--danger:#ef4444;--ring:0 0 0 3px rgba(212,175,55,.35);--radius:16px}
-:root{--touch-size:52px}
-/* UI tokens */
-:root{--space-1:6px;--space-2:12px;--transition-fast:120ms;--transition-med:280ms;--btn-elev:0 8px 20px rgba(0,0,0,.25)}
-*{box-sizing:border-box;margin:0;padding:0}
-html{color-scheme: light dark}
-body{font-family:Vazirmatn,IRANSans,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:linear-gradient(180deg,#0c0e12,#0f1115);color:var(--text);line-height:1.75;padding-bottom:110px}
-.appbar{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,rgba(14,16,22,.8),rgba(14,16,22,.6));-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid rgba(212,175,55,.18)}
-.appbar-inner{max-width:920px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.logo{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--brand),var(--brand-2));box-shadow:0 6px 24px rgba(212,175,55,.25)}
-.container{max-width:920px;margin:0 auto;padding:16px}
-.grid{display:grid;grid-template-columns:1fr;gap:16px}@media(min-width:980px){.grid{grid-template-columns:1fr 1fr}}
-.card{background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.01)),var(--card);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:18px}
-.row{display:flex;flex-wrap:wrap;gap:10px}.col{flex:1 1 220px}
-.select-wrap{position:relative}
-.select,.input{width:100%;padding:12px 14px;border-radius:12px;background:#0b0e14;color:var(--text);border:1px solid rgba(255,255,255,.12)}
-.select-wrap .select{padding-inline-start:14px;padding-inline-end:72px} /* room for inline actions */
-.input:focus,.select:focus{outline:none;border-color:var(--brand);box-shadow:var(--ring)}
-.inline-actions{position:absolute;inset-inline-end:8px;top:50%;transform:translateY(-50%);display:flex;gap:10px} /* place actions on start or end depending on dir */
-.inline-actions .i-btn{padding:10px 12px;min-width:var(--touch-size);min-height:var(--touch-size)}
-.i-btn{border:none;border-radius:12px;padding:12px 14px;cursor:pointer;background:rgba(255,255,255,.06);color:var(--text);border:1px solid rgba(255,255,255,.12);font-size:1rem;min-height:var(--touch-size);display:inline-flex;align-items:center;justify-content:center;gap:10px}
-.i-btn:focus-visible{outline:none;box-shadow:var(--ring)}
-.i-btn.primary{background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#232211;border:none;font-weight:800}
-.btn-ghost{background:transparent;border:1px solid rgba(255,255,255,.14);color:var(--text)}
-.btn-sm{padding:10px 12px;font-size:.98rem}
-.pill{display:inline-flex;gap:6px;align-items:center;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12)}
-.list{display:flex;flex-direction:column;gap:10px;margin-top:10px}
-.item{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;background:#0d1018;border:1px solid rgba(255,255,255,.08);padding:12px;border-radius:12px}
-.item-actions{display:flex;flex-direction:row;gap:8px;align-items:center}
-.tabs{position:fixed;bottom:10px;left:0;right:0;display:flex;justify-content:center;pointer-events:none}
-.tabs-inner{pointer-events:auto;display:flex;gap:6px;background:rgba(10,12,18,.7);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.12);padding:8px;border-radius:14px;margin:0 auto}
-.tab{background:transparent;color:#9aa4b2;border:none;border-radius:10px;padding:10px 12px;cursor:pointer}.tab.active{background:rgba(212,175,55,.12);color:var(--brand);font-weight:800}
-.toast{position:fixed;top:80px;right:16px;background:#0e121b;border:1px solid rgba(255,255,255,.12);color:#fff;padding:12px 14px;border-radius:12px;opacity:0;transform:translateY(-10px);transition:all .2s ease;z-index:60}
-.toast.show{opacity:1;transform:translateY(0)}
-.thumb{width:62px;height:62px;border-radius:10px;object-fit:cover;border:1px solid rgba(255,255,255,.12)}
-.thumb-wrap{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
-.viewer{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:80}
-.viewer img{max-width:92vw;max-height:92vh;border-radius:12px;box-shadow:0 20px 70px rgba(0,0,0,.6)}
-.viewer.show{display:flex}
-.badge{display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border-radius:12px;background:rgba(212,175,55,.12);color:var(--brand);border:1px solid rgba(212,175,55,.25);font-size:.85rem}
-.help-note{color:#9aa4b2;font-size:.9rem;margin-top:6px}
-
-/* utility and layout classes to replace inline styles */
-.header-left{display:flex;align-items:center;gap:12px}
-.app-title{font-weight:800}
-.app-subtitle{color:#9aa4b2;font-size:.86rem}
-.appbar-actions{display:flex;gap:8px;align-items:center}
-.section-heading{font-size:1.05rem;font-weight:800}
-.brand{color:var(--brand)}
-.cal-title{font-weight:800}
-.initially-hidden{display:none}
-.muted-text{color:#9aa4b2}
-.thumb-offset{margin-left:6px;cursor:pointer}
-.mt-8{margin-top:8px}
-.mt-12{margin-top:12px}
-.between-row{display:flex;align-items:center;justify-content:space-between}
-.mb-10{margin-bottom:10px}
-.mb-8{margin-bottom:8px}
-.d-none{display:none}
-
-/* daily toolbar spacing and thumb helpers (replace inline styles) */
-#daily-toolbar{gap:8px;margin:0 0 8px 0;display:flex;align-items:center}
-.thumb-box{display:inline-flex;align-items:center;gap:6px}
-.thumb-del{margin-inline-start:4px}
-
-/* v13.6 date card */
-.date-card{background:linear-gradient(135deg,#1c1f27,#121621);border:1px solid rgba(212,175,55,.35)!important;border-radius:18px;box-shadow:0 6px 24px rgba(0,0,0,.35)}
-.date-card{transition:transform var(--transition-med) cubic-bezier(.2,.9,.3,1),opacity var(--transition-med) ease,max-height var(--transition-med) ease;transform-origin:top center}
-.date-card.hidden{opacity:0;transform:translateY(-8px) scale(.995);pointer-events:none;max-height:0;overflow:hidden}
-.date-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-.date-title{display:flex;align-items:center;gap:10px;font-weight:800;color:var(--brand)}
-.date-title .emoji{font-size:1.2rem}
-.jalali-input{display:flex;gap:8px;align-items:center;margin-top:6px}
-.jalali-input .input{flex:1}
-.date-actions{display:flex;gap:8px;justify-content:center;margin-top:10px}
-.i-btn.success{background:linear-gradient(135deg,#22c55e,#16a34a);color:#0d1b10;border:none;font-weight:800}
-.i-btn.danger{background:linear-gradient(135deg,#ef4444,#dc2626);color:#230b0b;border:none;font-weight:800}
-.i-btn{transition:transform var(--transition-fast) ease,box-shadow var(--transition-fast) ease}
-.i-btn:hover{transform:translateY(-3px);box-shadow:var(--btn-elev)}
-.i-btn:active{transform:translateY(0)}
-.calendar{margin-top:10px;border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:10px;background:#0e121a}
-.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-.cal-head .nav{display:flex;gap:6px}
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
-.cal-cell{padding:10px 0;min-height:44px;border-radius:10px;text-align:center;background:#0b0e14;border:1px solid rgba(255,255,255,.08);cursor:pointer}
-.cal-cell.muted{opacity:.5}
-.cal-cell.today{outline:2px solid var(--brand);}
-.cal-cell.selected{background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#232211;border:none}
-.old-selects{display:none}
-.date-preview{margin-top:10px;display:flex;gap:8px;align-items:center;color:#e7ecf3;font-weight:700}
-.badge{padding:6px 10px;font-weight:700;box-shadow:0 4px 12px rgba(0,0,0,.35)}
-
-/* appbar date chip */
-#date-chip{display:none;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:rgba(212,175,55,.08);color:var(--brand);border:1px solid rgba(212,175,55,.18);cursor:pointer;font-weight:700}
-#open-date-btn svg{margin-inline-start:6px;opacity:.95;transform:translateY(1px)}
-@media(max-width:480px){.cal-cell{padding:12px 0;min-height:48px}}
-/* Mobile optimizations */
-@media(max-width:640px){
-  body{padding-bottom:140px}
-  .appbar-inner{padding:10px 12px}
-  .app-title{font-size:1.05rem}
-  .app-subtitle{display:none}
-  .appbar-actions{gap:6px}
-  #date-chip{display:none} /* keep chip hidden on small screens to save space */
+  <input id="file-upload" type="file" accept="image/*" class="d-none">
+  <input id="file-camera" type="file" accept="image/*" class="d-none">
+  <style>
   .container{padding:12px}
   .card{padding:14px}
   .row{gap:8px}
-  .col{flex:1 1 100%} /* stack columns */
+  .col{flex:1 1 100%}
   .select,.input{padding:14px 16px;font-size:1rem}
-  .i-btn,.btn-ghost{padding:10px 12px;font-size:1rem}
+  .i-btn,.btn-ghost{padding:12px 14px;font-size:1rem}
   .btn-sm{padding:10px 12px}
   .cal-cell{padding:14px 0;min-height:54px;font-size:1rem}
   .thumb{width:72px;height:72px}
   .thumb-wrap{gap:10px}
   .item{grid-template-columns:1fr}
   .item-actions{justify-content:flex-start}
-  .tabs{bottom:6px}
+  .tabs{bottom:8px}
   .tabs-inner{padding:6px}
   #daily-toolbar{flex-wrap:wrap}
   .inline-actions{inset-inline-end:6px}
   .pill{padding:8px 12px}
-}
 
 /* decimal helper button (visible on small screens to aid mobile keyboards without decimal key) */
 .input-with-dec{display:flex;align-items:center;gap:8px}
 .input-with-dec .input{flex:1;width:auto}
 .dec-btn{display:none;border:none;background:rgba(255,255,255,.04);color:var(--text);padding:12px 14px;border-radius:12px;cursor:pointer;flex:0 0 auto;min-width:var(--touch-size);min-height:var(--touch-size)}
 @media(max-width:760px){ .dec-btn{display:inline-flex;z-index:6;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.06)} }
-/* Modal editor styles (no inline styles) */
-.modal-viewer{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:90;padding:20px}
-.modal-viewer.show{display:flex}
-.modal-card{max-width:520px;width:100%}
-.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:12px}
-.form-row{display:block;margin-top:8px}
 </style>
-<script>
-  // Inject manifest only on http(s) to avoid CORS on file://
-  (function(){
-    const IS_HTTP = location.protocol.startsWith('http');
-    if (IS_HTTP) {
-      const m = document.createElement('link');
-      m.rel='manifest'; m.href='manifest.webmanifest'; document.head.appendChild(m);
-    }
-  })();
-</script>
-</head>
-<body>
-<header class="appbar">
-  <div class="appbar-inner">
-    <div class="header-left">
-      <div class="logo" aria-hidden="true"></div>
-      <div><div class="app-title">گنجینه</div><div class="app-subtitle">مدیریت موجودی طلافروشی</div></div>
-    </div>
-    <div class="appbar-actions">
-      <button class="btn-ghost btn-sm" id="print-btn">چاپ</button>
-      <button class="btn-ghost btn-sm" id="open-date-btn" title="نمایش/تغییر تاریخ">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M7 11h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.4"/></svg>
-        تاریخ
-      </button>
-      <div id="date-chip" title="تاریخ ثبت‌شده"></div>
-      <button class="btn-ghost btn-sm" id="theme-toggle">حالت روشن/تاریک</button>
+  .mb-10{margin-bottom:10px}
+  .mb-8{margin-bottom:8px}
+  .d-none{display:none}
+
+  .date-card{background:linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.00));border:1px solid rgba(212,175,55,0.12);border-radius:18px;box-shadow:0 10px 40px rgba(0,0,0,0.45)}
+  .date-card{transition:transform var(--transition-med) cubic-bezier(.2,.9,.3,1),opacity var(--transition-med) ease,max-height var(--transition-med) ease;transform-origin:top center}
+  .date-card.hidden{opacity:0;transform:translateY(-8px) scale(.995);pointer-events:none;max-height:0;overflow:hidden}
+  .date-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+  .date-title{display:flex;align-items:center;gap:10px;font-weight:800;color:var(--brand)}
+  .date-title .emoji{font-size:1.2rem}
+  .jalali-input{display:flex;gap:8px;align-items:center;margin-top:6px}
+  .jalali-input .input{flex:1}
+  .date-actions{display:flex;gap:8px;justify-content:center;margin-top:10px}
+  .i-btn.success{background:linear-gradient(135deg,#22c55e,#16a34a);color:#07110a;border:none;font-weight:800}
+  .i-btn.danger{background:linear-gradient(135deg,#ef4444,#dc2626);color:#230b0b;border:none;font-weight:800}
+  .i-btn{transition:transform var(--transition-fast) ease,box-shadow var(--transition-fast) ease}
+  .i-btn:hover{transform:translateY(-3px);box-shadow:var(--elev-1)}
+  .i-btn:active{transform:translateY(0)}
+  .calendar{margin-top:10px;border:1px solid rgba(255,255,255,.03);border-radius:14px;padding:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00))}
+  .cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+  .cal-head .nav{display:flex;gap:6px}
+  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+  .cal-cell{padding:10px 0;min-height:44px;border-radius:10px;text-align:center;background:rgba(255,255,255,0.01);border:1px solid rgba(255,255,255,0.03);cursor:pointer}
+  .cal-cell.muted{opacity:.6}
+  .cal-cell.today{outline:2px solid var(--brand);}
+  .cal-cell.selected{background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#232211;border:none}
+  .old-selects{display:none}
+  .date-preview{margin-top:10px;display:flex;gap:8px;align-items:center;color:var(--text);font-weight:700}
+  .badge{padding:6px 10px;font-weight:700;box-shadow:0 6px 20px rgba(0,0,0,0.45)}
+
+  /* appbar date chip */
+  #date-chip{display:none;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:linear-gradient(180deg, rgba(212,175,55,0.06), rgba(212,175,55,0.02));color:var(--brand);border:1px solid rgba(212,175,55,0.12);cursor:pointer;font-weight:700}
+  #open-date-btn svg{margin-inline-start:6px;opacity:.95;transform:translateY(1px)}
+  @media(max-width:480px){.cal-cell{padding:12px 0;min-height:48px}}
+  /* Mobile optimizations */
+  @media(max-width:640px){
+    body{padding-bottom:160px}
+    .appbar-inner{padding:10px 12px}
+    .app-title{font-size:1.02rem}
+    .app-subtitle{display:none}
+    .appbar-actions{gap:6px}
+    #date-chip{display:none}
+    .container{padding:12px}
+    .card{padding:14px}
+    .row{gap:8px}
+    .col{flex:1 1 100%}
+    .select,.input{padding:14px 16px;font-size:1rem}
+    .i-btn,.btn-ghost{padding:12px 14px;font-size:1rem}
+    .btn-sm{padding:10px 12px}
+    .cal-cell{padding:14px 0;min-height:54px;font-size:1rem}
+    .thumb{width:72px;height:72px}
+    .thumb-wrap{gap:10px}
+    .item{grid-template-columns:1fr}
+    .item-actions{justify-content:flex-start}
+    .tabs{bottom:8px}
+    .tabs-inner{padding:6px}
+    #daily-toolbar{flex-wrap:wrap}
+    .inline-actions{inset-inline-end:6px}
+    .pill{padding:8px 12px}
+  }
+
+  /* decimal helper button (visible on small screens to aid mobile keyboards without decimal key) */
+  .input-with-dec{display:flex;align-items:center;gap:8px}
+  .input-with-dec .input{flex:1;width:auto}
+  .dec-btn{display:none;border:none;background:rgba(255,255,255,.04);color:var(--text);padding:12px 14px;border-radius:12px;cursor:pointer;flex:0 0 auto;min-width:var(--touch-size);min-height:var(--touch-size)}
+  @media(max-width:760px){ .dec-btn{display:inline-flex;z-index:6;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.06)} }
+  </style>
     </div>
   </div>
 </header>
@@ -290,140 +221,159 @@ body{font-family:Vazirmatn,IRANSans,system-ui,-apple-system,Segoe UI,Roboto,sans
       <div class="row mt-8">
   <input id="file-upload" type="file" accept="image/*" class="d-none">
   <!-- `capture` hint is intentionally present to open rear camera on supported mobile browsers; desktop browsers ignore it -->
-  <input id="file-camera" type="file" accept="image/*" capture="environment" class="d-none">
-        <button class="i-btn" id="btn-upload">آپلود عکس</button>
-        <button class="i-btn" id="btn-camera">گرفتن عکس</button>
-      </div>
-      <div class="thumb-wrap" id="bank-photos-preview"></div>
-      <div class="help-note">حداکثر ۳ عکس برای هر رکورد. تصاویر به‌صورت آفلاین در مرورگر ذخیره می‌شوند.</div>
-  <div class="list" id="bank-cards-list mt-12"><div class="muted-text">هنوز آیتمی ثبت نشده</div></div>
-    </section>
+  <input id="file-camera" type="file" accept="image/*" class="d-none">
+        <link rel="icon" href="favicon.ico">
+        <style>
+        /* Modern polished theme */
+        :root{
+          --bg:#071018;
+          --surface:#0f1923;
+          --card:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+          --muted:#9aa4b2;
+          --text:#e7ecf3;
+          --brand:#D4AF37; --brand-2:#b99728;
+          --danger:#ef4444;
+          --ring:0 0 0 4px rgba(212,175,55,.14);
+          --radius:14px;
+          --touch-size:52px;
+          --elev-1:0 8px 24px rgba(3,6,16,0.6);
+          --elev-2:0 14px 40px rgba(2,8,20,0.65);
+          --glass:rgba(255,255,255,0.026);
+          --transition-fast:140ms; --transition-med:260ms; --transition-slow:420ms;
+        }
+        *{box-sizing:border-box;margin:0;padding:0}
+        html{color-scheme: light dark}
+        body{
+          font-family: Vazirmatn, IRANSans, Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Naskh Arabic UI', sans-serif;
+          background: radial-gradient(1200px 600px at 10% 10%, rgba(212,175,55,0.03), transparent), linear-gradient(180deg,#061018,#071018);
+          color:var(--text);line-height:1.6;padding-bottom:120px;-webkit-font-smoothing:antialiased;
+        }
 
-    <!-- DAILY -->
-    <section class="card" id="daily-tab">
-      <div class="between-row mb-10">
-        <h2 class="section-heading brand">گزارش روزانه</h2>
-        <div class="pill" id="date-badge">—</div>
-      </div>
-  <div id="daily-toolbar" class="row">
-        <button class="btn-ghost btn-sm" id="btn-export-json">خروجی JSON</button>
-        <button class="btn-ghost btn-sm" id="btn-export-csv">خروجی CSV</button>
-        <label class="btn-ghost btn-sm" for="import-file">ورود از فایل</label>
-  <input id="import-file" type="file" accept=".json,.csv" class="d-none">
-        <button class="btn-ghost btn-sm" id="btn-undo">واگرد</button>
-        <button class="btn-ghost btn-sm" id="btn-help">راهنما</button>
-      </div>
-  <div id="daily-list"><div class="muted-text">فعلاً داده‌ای ثبت نشده است</div></div>
-    </section>
-  </div>
-</main>
+        .appbar{position:sticky;top:0;z-index:60;background:linear-gradient(180deg, rgba(6,8,12,0.6), rgba(6,8,12,0.4)); -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:var(--elev-1);border-bottom:1px solid rgba(255,255,255,0.03)}
+        .appbar-inner{max-width:980px;margin:0 auto;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+        .logo{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--brand),var(--brand-2));box-shadow:0 8px 30px rgba(217,179,70,0.12);display:inline-block}
+        .container{max-width:980px;margin:0 auto;padding:18px}
+        .grid{display:grid;grid-template-columns:1fr;gap:18px}
+        @media(min-width:980px){.grid{grid-template-columns:1fr 1fr}}
 
-<div class="tabs">
-  <div class="tabs-inner">
-    <button class="tab active" id="tab-gold">طلای مستعمل</button>
-    <button class="tab" id="tab-coins">سکه‌ها</button>
-    <button class="tab" id="tab-cash">نقدینگی</button>
-    <button class="tab" id="tab-bank">بانک</button>
-    <button class="tab" id="tab-daily">روزانه</button>
-  </div>
-</div>
+        .card{background:var(--surface);background-image:var(--card);border-radius:var(--radius);padding:18px;border:1px solid rgba(255,255,255,0.03);box-shadow:var(--elev-1);transition:transform var(--transition-fast) ease,box-shadow var(--transition-fast) ease}
+        .card:hover{transform:translateY(-4px);box-shadow:var(--elev-2)}
 
-<div class="viewer" id="photo-viewer"><img alt="preview"></div>
-<div class="toast" id="toast"></div>
+        .row{display:flex;flex-wrap:wrap;gap:12px}.col{flex:1 1 220px}
+        .select-wrap{position:relative}
+        .select,.input{width:100%;padding:12px 14px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));color:var(--text);border:1px solid rgba(255,255,255,0.04);transition:box-shadow var(--transition-fast),border-color var(--transition-fast)}
+        .select:focus,.input:focus{outline:none;border-color:rgba(212,175,55,0.95);box-shadow:var(--ring)}
+        .select-wrap .select{padding-inline-start:14px;padding-inline-end:72px}
+        .inline-actions{position:absolute;inset-inline-end:8px;top:50%;transform:translateY(-50%);display:flex;gap:10px}
+        .inline-actions .i-btn{padding:10px 12px;min-width:var(--touch-size);min-height:var(--touch-size)}
+        .i-btn{border:none;border-radius:12px;padding:12px 14px;cursor:pointer;background:var(--glass);color:var(--text);border:1px solid rgba(255,255,255,0.04);font-size:0.98rem;min-height:var(--touch-size);display:inline-flex;align-items:center;justify-content:center;gap:10px;transition:transform var(--transition-fast),box-shadow var(--transition-fast),background var(--transition-fast)}
+        .i-btn:focus-visible{outline:none;box-shadow:var(--ring)}
+        .i-btn:hover{transform:translateY(-3px);box-shadow:var(--elev-1)}
+        .i-btn.primary{background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#09110b;border:none;font-weight:800;box-shadow:0 8px 28px rgba(184,141,40,0.12)}
+        .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
+        .btn-sm{padding:10px 12px;font-size:.95rem}
+        .pill{display:inline-flex;gap:6px;align-items:center;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.03)}
+        .list{display:flex;flex-direction:column;gap:12px;margin-top:12px}
+        .item{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));border:1px solid rgba(255,255,255,0.03);padding:12px;border-radius:12px;transition:transform .18s ease,box-shadow .18s ease}
+        .item:hover{transform:translateY(-3px);box-shadow:var(--elev-1)}
+        .item .meta{color:var(--muted);font-size:.92rem;margin-top:6px}
+        .item-actions{display:flex;flex-direction:row;gap:8px;align-items:center}
+        .tabs{position:fixed;bottom:14px;left:0;right:0;display:flex;justify-content:center;pointer-events:none}
+        .tabs-inner{pointer-events:auto;display:flex;gap:8px;background:linear-gradient(180deg, rgba(8,10,14,0.6), rgba(8,10,14,0.45));-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-radius:20px;padding:8px;border:1px solid rgba(255,255,255,0.04);box-shadow:0 10px 30px rgba(3,6,12,0.6)}
+        .tab{background:transparent;color:var(--muted);border:none;border-radius:14px;padding:10px 14px;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+        .tab.active{background:linear-gradient(135deg, rgba(212,175,55,0.12), rgba(212,175,55,0.06));color:var(--brand);font-weight:700;box-shadow:0 6px 18px rgba(212,175,55,0.06)}
+        .toast{position:fixed;top:22px;right:18px;background:linear-gradient(180deg,#0e1318,#0b0f14);border:1px solid rgba(255,255,255,0.04);color:#fff;padding:10px 14px;border-radius:12px;opacity:0;transform:translateY(-8px);transition:all .18s ease;z-index:100}
+        .toast.show{opacity:1;transform:translateY(0)}
+        .thumb{width:72px;height:72px;border-radius:10px;object-fit:cover;border:1px solid rgba(255,255,255,0.04);box-shadow:0 8px 20px rgba(0,0,0,0.5)}
+        .thumb-wrap{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+        .viewer{position:fixed;inset:0;background:linear-gradient(rgba(3,6,10,0.7), rgba(3,6,10,0.85));display:none;align-items:center;justify-content:center;z-index:200}
+        .viewer img{max-width:92vw;max-height:92vh;border-radius:14px;box-shadow:0 40px 120px rgba(0,0,0,0.7)}
+        .viewer.show{display:flex}
+        .badge{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:12px;background:linear-gradient(180deg, rgba(212,175,55,0.08), rgba(212,175,55,0.02));color:var(--brand);border:1px solid rgba(212,175,55,0.12);font-size:.9rem}
+        .help-note{color:var(--muted);font-size:.92rem;margin-top:6px}
 
-<!-- Unified modal editor for editing records (gold / coin / bank) -->
-<div id="record-modal" class="modal-viewer" aria-hidden="true" role="dialog" aria-modal="true">
-  <div class="card modal-card"> 
-    <h3 id="modal-title" class="section-heading">ویرایش</h3>
-    <div id="modal-body">
-      <!-- dynamic fields inserted here -->
-    </div>
-    <div class="modal-actions">
-      <button class="i-btn" id="modal-cancel">انصراف</button>
-      <button class="i-btn primary" id="modal-save">ذخیره</button>
-    </div>
-  </div>
-</div>
+        /* utility and layout classes to replace inline styles */
+        .header-left{display:flex;align-items:center;gap:12px}
+        .app-title{font-weight:800;font-size:1.06rem}
+        .app-subtitle{color:var(--muted);font-size:.88rem}
+        .appbar-actions{display:flex;gap:10px;align-items:center}
+        .section-heading{font-size:1.04rem;font-weight:800}
+        .brand{color:var(--brand)}
+        .cal-title{font-weight:800}
+        .initially-hidden{display:none}
+        .muted-text{color:var(--muted)}
+        .thumb-offset{margin-left:8px;cursor:pointer}
+        .mt-8{margin-top:8px}
+        .mt-12{margin-top:12px}
+        .between-row{display:flex;align-items:center;justify-content:space-between}
+        .mb-10{margin-bottom:10px}
+        .mb-8{margin-bottom:8px}
+        .d-none{display:none}
 
-<script>
-const toast=document.getElementById('toast');
-function showToast(m){toast.textContent=m;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),1600)}
-document.getElementById('theme-toggle').addEventListener('click',()=>{ document.documentElement.classList.toggle('light'); showToast('حالت نمایش تغییر کرد'); });
-document.getElementById('print-btn').addEventListener('click',()=>window.print());
-// Open date form from appbar (allows reopening during same session)
-const openDateBtn = document.getElementById('open-date-btn');
-const dateCardEl = document.querySelector('.date-card');
-const dateChip = document.getElementById('date-chip');
-function showDateCard(){ if(dateCardEl){ dateCardEl.classList.remove('hidden'); dateCardEl.style.removeProperty('display'); } }
-function hideDateCard(){ if(dateCardEl){ dateCardEl.classList.add('hidden'); /* keep display removed to allow layout */ } }
-if(openDateBtn){ openDateBtn.addEventListener('click',()=>{ showDateCard(); showSetup(); const inp=document.getElementById('jalali-date'); if(inp){ inp.focus(); inp.select(); } }); }
+        .date-card{background:linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.00));border:1px solid rgba(212,175,55,0.12);border-radius:18px;box-shadow:0 10px 40px rgba(0,0,0,0.45)}
+        .date-card{transition:transform var(--transition-med) cubic-bezier(.2,.9,.3,1),opacity var(--transition-med) ease,max-height var(--transition-med) ease;transform-origin:top center}
+        .date-card.hidden{opacity:0;transform:translateY(-8px) scale(.995);pointer-events:none;max-height:0;overflow:hidden}
+        .date-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+        .date-title{display:flex;align-items:center;gap:10px;font-weight:800;color:var(--brand)}
+        .date-title .emoji{font-size:1.2rem}
+        .jalali-input{display:flex;gap:8px;align-items:center;margin-top:6px}
+        .jalali-input .input{flex:1}
+        .date-actions{display:flex;gap:8px;justify-content:center;margin-top:10px}
+        .i-btn.success{background:linear-gradient(135deg,#22c55e,#16a34a);color:#07110a;border:none;font-weight:800}
+        .i-btn.danger{background:linear-gradient(135deg,#ef4444,#dc2626);color:#230b0b;border:none;font-weight:800}
+        .i-btn{transition:transform var(--transition-fast) ease,box-shadow var(--transition-fast) ease}
+        .i-btn:hover{transform:translateY(-3px);box-shadow:var(--elev-1)}
+        .i-btn:active{transform:translateY(0)}
+        .calendar{margin-top:10px;border:1px solid rgba(255,255,255,.03);border-radius:14px;padding:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00))}
+        .cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+        .cal-head .nav{display:flex;gap:6px}
+        .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+        .cal-cell{padding:10px 0;min-height:44px;border-radius:10px;text-align:center;background:rgba(255,255,255,0.01);border:1px solid rgba(255,255,255,0.03);cursor:pointer}
+        .cal-cell.muted{opacity:.6}
+        .cal-cell.today{outline:2px solid var(--brand);}
+        .cal-cell.selected{background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#232211;border:none}
+        .old-selects{display:none}
+        .date-preview{margin-top:10px;display:flex;gap:8px;align-items:center;color:var(--text);font-weight:700}
+        .badge{padding:6px 10px;font-weight:700;box-shadow:0 6px 20px rgba(0,0,0,0.45)}
 
-// Jalali conversion + date helpers
-function g2j(gy, gm, gd){const g_d_m=[0,31,59,90,120,151,181,212,243,273,304,334];let gy2=(gm>2)?(gy+1):gy;let days=355666+(365*gy)+Math.floor((gy2+3)/4)-Math.floor((gy2+99)/100)+Math.floor((gy2+399)/400)+gd+g_d_m[gm-1];let jy=-1595+33*Math.floor(days/12053);days%=12053;jy+=4*Math.floor(days/1461);days%=1461;if(days>365){jy+=Math.floor((days-1)/365);days=(days-1)%365;}let jm=(days<186)?1+Math.floor(days/31):7+Math.floor((days-186)/30);let jd=1+((days<186)?(days%31):((days-186)%30));return {jy,jm,jd};}
-function j2g(jy,jm,jd){jy=parseInt(jy,10);jm=parseInt(jm,10);jd=parseInt(jd,10);let jy2=jy+1595;let days=-355668+(365*jy2)+Math.floor(jy2/33)*8+Math.floor(((jy2%33)+3)/4)+jd+(jm<7?(jm-1)*31:(jm-7)*30+186);let gy=400*Math.floor(days/146097);days%=146097;if(days>36524){gy+=100*Math.floor(--days/36524);days%=36524;if(days>=365)days++;}gy+=4*Math.floor(days/1461);days%=1461;if(days>365){gy+=Math.floor((days-1)/365);days=(days-1)%365;}let gd=days+1;const sal_a=[31,((gy%4===0&&gy%100!==0)||(gy%400===0))?29:28,31,30,31,30,31,31,30,31,30,31];let gm=0;for(gm=1;gm<=12&&gd>sal_a[gm-1];gm++){gd-=sal_a[gm-1];}return {gy,gm,gd};}
-function isoToJalali(iso){const [y,m,d]=iso.split('-').map(v=>parseInt(v,10));const {jy,jm,jd}=g2j(y,m,d);return `${jy}-${String(jm).padStart(2,'0')}-${String(jd).padStart(2,'0')}`;}
-function jalaliToISO(jy,jm,jd){const {gy,gm,gd}=j2g(jy,jm,jd);return `${String(gy).padStart(4,'0')}-${String(gm).padStart(2,'0')}-${String(gd).padStart(2,'0')}`;}
-function weekdayFaFromISO(iso){const dt=new Date(iso+'T12:00:00+03:30');return ['یک‌شنبه','دو‌شنبه','سه‌شنبه','چهارشنبه','پنج‌شنبه','جمعه','شنبه'][dt.getDay()];}
-function todayTehranISODate(){try{return new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Tehran',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());}catch(e){const now=new Date();const utc=now.getTime()+now.getTimezoneOffset()*60000;const tehran=new Date(utc+3.5*3600*1000);return new Date(tehran).toISOString().slice(0,10);}}
-const J_MONTHS=['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
-function parseJalaliStr(s){const m=s.replace(/\s/g,'').match(/^(\d{4})[\/-](\d{1,2})[\/-](\d{1,2})$/); if(!m) return null; const jy=+m[1], jm=+m[2], jd=+m[3]; return {jy,jm,jd};}
-function formatJalali(jy,jm,jd){return jy+'-'+String(jm).padStart(2,'0')+'-'+String(jd).padStart(2,'0');}
+        /* appbar date chip */
+        #date-chip{display:none;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:linear-gradient(180deg, rgba(212,175,55,0.06), rgba(212,175,55,0.02));color:var(--brand);border:1px solid rgba(212,175,55,0.12);cursor:pointer;font-weight:700}
+        #open-date-btn svg{margin-inline-start:6px;opacity:.95;transform:translateY(1px)}
+        @media(max-width:480px){.cal-cell{padding:12px 0;min-height:48px}}
+        @media(max-width:640px){
+          body{padding-bottom:160px}
+          .appbar-inner{padding:10px 12px}
+          .app-title{font-size:1.02rem}
+          .app-subtitle{display:none}
+          .appbar-actions{gap:6px}
+          #date-chip{display:none}
+          .container{padding:12px}
+          .card{padding:14px}
+          .row{gap:8px}
+          .col{flex:1 1 100%}
+          .select,.input{padding:14px 16px;font-size:1rem}
+          .i-btn,.btn-ghost{padding:12px 14px;font-size:1rem}
+          .btn-sm{padding:10px 12px}
+          .cal-cell{padding:14px 0;min-height:54px;font-size:1rem}
+          .thumb{width:72px;height:72px}
+          .thumb-wrap{gap:10px}
+          .item{grid-template-columns:1fr}
+          .item-actions{justify-content:flex-start}
+          .tabs{bottom:8px}
+          .tabs-inner{padding:6px}
+          #daily-toolbar{flex-wrap:wrap}
+          .inline-actions{inset-inline-end:6px}
+          .pill{padding:8px 12px}
+        }
 
-// State
-let currentDate=null;
-let inventory={ gold:[], coins:[], banks:[], cash:0, cashLog:[], karats:['18','21','24'], coinTypes:['بهار آزادی','نیم سکه','ربع سکه','سکه گرمی'], bankNames:['ملی','ملت','صادرات','پارسیان','تجارت','رفاه','سامان'] };
-
-// Elements
-const jYear=document.getElementById('j-year'), jMonth=document.getElementById('j-month'), jDay=document.getElementById('j-day');
-const dateSetup=document.getElementById('date-setup'), dateFixed=document.getElementById('date-fixed');
-const weekdayPill=document.getElementById('weekday-pill');
-const currentDateJ=document.getElementById('current-date-jalali');
-const currentDateG=document.getElementById('current-date-greg');
-const dateBadge=document.getElementById('date-badge');
-
-function save(){ localStorage.setItem('inventory',JSON.stringify(inventory)); }
-function load(){ const s=localStorage.getItem('inventory'); if(s){ try{ inventory={...inventory,...JSON.parse(s)} }catch{} } }
-
-function isJLeap(jy){const g=j2g(jy,12,30);const back=g2j(g.gy,g.gm,g.gd);return back.jd===30&&back.jm===12;}
-function daysInJMonth(jy,jm){if(jm<=6)return 31;if(jm<=11)return 30;return isJLeap(jy)?30:29;}
-function fillYears(centerJy){ if(!jYear) return; jYear.textContent=''; for(let y=centerJy-5;y<=centerJy+5;y++){const opt=document.createElement('option');opt.value=String(y);opt.textContent=String(y);if(y===centerJy)opt.selected=true;jYear.appendChild(opt);} }
-function fillDays(jy,jm,selected=null){ if(!jDay) return; jDay.textContent='';const n=daysInJMonth(jy,jm);for(let d=1;d<=n;d++){const opt=document.createElement('option');opt.value=String(d);opt.textContent=String(d).padStart(2,'0');if(selected && d===selected)opt.selected=true;jDay.appendChild(opt);} }
-
-// Calendar UI
-let calState={jy:1400,jm:1,jd:1,selected:null};
-function renderCalendar(){
-  const wdGrid=document.getElementById('cal-weekdays'); const dGrid=document.getElementById('cal-days');
-  if(!wdGrid || !dGrid) return;
-  wdGrid.textContent=''; ['ش','ی','د','س','چ','پ','ج'].forEach(l=>{ const c=document.createElement('div'); c.className='cal-cell muted'; c.textContent=l; wdGrid.append(c); });
-  dGrid.textContent='';
-  const title=document.getElementById('cal-title'); if(title) title.textContent=J_MONTHS[calState.jm-1]+' '+calState.jy;
-  const startISO=jalaliToISO(calState.jy,calState.jm,1);
-  const start = new Date(startISO+'T12:00:00+03:30');
-  const firstWd = (start.getDay()+6)%7; // Saturday index 0
-  const dim = daysInJMonth(calState.jy, calState.jm);
-  for(let i=0;i<firstWd;i++){ const p=document.createElement('div'); p.className='cal-cell muted'; p.textContent=''; dGrid.append(p); }
-  const todayISO=todayTehranISODate(); const {jy:tjy,jm:tjm,jd:tjd}=g2j(parseInt(todayISO.slice(0,4)),parseInt(todayISO.slice(5,7)),parseInt(todayISO.slice(8,10)));
-  for(let d=1; d<=dim; d++){
-    const c=document.createElement('div'); c.className='cal-cell'; c.textContent=String(d);
-    if(tjy===calState.jy && tjm===calState.jm && tjd===d) c.classList.add('today');
-    if(calState.selected && calState.selected.jy===calState.jy && calState.selected.jm===calState.jm && calState.selected.jd===d) c.classList.add('selected');
-    c.addEventListener('click',()=>{
-      calState.selected={jy:calState.jy,jm:calState.jm,jd:d};
-      const inp=document.getElementById('jalali-date');
-      inp.value = formatJalali(calState.jy,calState.jm,d).replace(/-/g,'/');
-      renderCalendar();
-    });
-    dGrid.append(c);
-  }
-}
-
-function applyDate(iso){
-  currentDate=iso; localStorage.setItem('currentDate', iso);
-  const j=isoToJalali(iso); weekdayPill.textContent=weekdayFaFromISO(iso);
-  if(dateSetup) dateSetup.style.display='none'; if(dateFixed) dateFixed.style.display='flex';
-  if (currentDateJ) currentDateJ.textContent=j;
-  if (currentDateG) currentDateG.textContent=`(${iso})`;
-  if (dateBadge) dateBadge.textContent = j;
+        /* decimal helper button (visible on small screens to aid mobile keyboards without decimal key) */
+        .input-with-dec{display:flex;align-items:center;gap:8px}
+        .input-with-dec .input{flex:1;width:auto}
+        .dec-btn{display:none;border:none;background:rgba(255,255,255,.04);color:var(--text);padding:12px 14px;border-radius:12px;cursor:pointer;flex:0 0 auto;min-width:var(--touch-size);min-height:var(--touch-size)}
+        @media(max-width:760px){ .dec-btn{display:inline-flex;z-index:6;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.06)} }
+    </style>
+  <script>
+  function applyDate(iso){
   const prev=document.getElementById('date-preview'); const wt=document.getElementById('weekday-badge'); const pt=document.getElementById('preview-text');
   if(prev){ prev.style.display='flex'; wt.textContent=weekdayFaFromISO(iso); pt.textContent=isoToJalali(iso)+' ('+iso+')'; }
   // show chip in appbar
