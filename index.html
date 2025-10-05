@@ -10,6 +10,7 @@
 <link rel="icon" href="favicon.ico">
 <style>
 :root{--bg:#0f1115;--card:#121621;--muted:#9aa4b2;--text:#e7ecf3;--brand:#D4AF37;--brand-2:#b99728;--danger:#ef4444;--ring:0 0 0 3px rgba(212,175,55,.35);--radius:16px}
+:root{--touch-size:44px}
 /* UI tokens */
 :root{--space-1:6px;--space-2:12px;--transition-fast:120ms;--transition-med:280ms;--btn-elev:0 8px 20px rgba(0,0,0,.25)}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -27,13 +28,15 @@ body{font-family:Vazirmatn,IRANSans,system-ui,-apple-system,Segoe UI,Roboto,sans
 .select-wrap .select{padding-inline-start:14px;padding-inline-end:72px} /* room for inline actions */
 .input:focus,.select:focus{outline:none;border-color:var(--brand);box-shadow:var(--ring)}
 .inline-actions{position:absolute;inset-inline-end:8px;top:50%;transform:translateY(-50%);display:flex;gap:10px} /* place actions on start or end depending on dir */
-.inline-actions .i-btn{padding:8px 10px;min-width:44px;min-height:40px}
-.i-btn{border:none;border-radius:10px;padding:10px 12px;cursor:pointer;background:rgba(255,255,255,.06);color:var(--text);border:1px solid rgba(255,255,255,.12);font-size:1rem;min-height:44px;display:inline-flex;align-items:center;justify-content:center}
+.inline-actions .i-btn{padding:8px 10px;min-width:var(--touch-size);min-height:var(--touch-size)}
+.i-btn{border:none;border-radius:10px;padding:10px 12px;cursor:pointer;background:rgba(255,255,255,.06);color:var(--text);border:1px solid rgba(255,255,255,.12);font-size:1rem;min-height:var(--touch-size);display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.i-btn:focus-visible{outline:none;box-shadow:var(--ring)}
 .i-btn.primary{background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#232211;border:none;font-weight:800}
 .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,.14);color:var(--text)}.btn-sm{padding:8px 10px;font-size:.92rem}
 .pill{display:inline-flex;gap:6px;align-items:center;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12)}
 .list{display:flex;flex-direction:column;gap:10px;margin-top:10px}
-.item{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;background:#0d1018;border:1px solid rgba(255,255,255,.08);padding:12px;border-radius:12px}
+.item{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;background:#0d1018;border:1px solid rgba(255,255,255,.08);padding:12px;border-radius:12px}
+.item-actions{display:flex;flex-direction:row;gap:8px;align-items:center}
 .tabs{position:fixed;bottom:10px;left:0;right:0;display:flex;justify-content:center;pointer-events:none}
 .tabs-inner{pointer-events:auto;display:flex;gap:6px;background:rgba(10,12,18,.7);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.12);padding:8px;border-radius:14px;margin:0 auto}
 .tab{background:transparent;color:#9aa4b2;border:none;border-radius:10px;padding:10px 12px;cursor:pointer}.tab.active{background:rgba(212,175,55,.12);color:var(--brand);font-weight:800}
@@ -119,6 +122,8 @@ body{font-family:Vazirmatn,IRANSans,system-ui,-apple-system,Segoe UI,Roboto,sans
   .cal-cell{padding:14px 0;min-height:54px;font-size:1rem}
   .thumb{width:72px;height:72px}
   .thumb-wrap{gap:10px}
+  .item{grid-template-columns:1fr}
+  .item-actions{justify-content:flex-start}
   .tabs{bottom:6px}
   .tabs-inner{padding:6px}
   #daily-toolbar{flex-wrap:wrap}
@@ -476,13 +481,11 @@ function renderGold(){ const wrap=document.getElementById('gold-items-list'); wr
   if(!(inventory.gold||[]).length){ wrap.innerHTML='<div class="muted-text">هنوز آیتمی ثبت نشده</div>'; return; }
   (inventory.gold||[]).forEach((it, idx)=>{ const row=document.createElement('div'); row.className='item';
     const left=document.createElement('div'); left.innerHTML=`<b>${it.karat} عیار – ${mgToStr(it.weightMg)} گرم</b><div class="meta">${it.date?isoToJalali(it.date):'بدون تاریخ'}</div>`;
-    const actions=document.createElement('div');
-    // Edit button
-    const edit=document.createElement('button'); edit.className='i-btn btn-sm'; edit.textContent='ویرایش'; edit.onclick=()=>{ editGold(idx); };
-    // Delete button
-    const del=document.createElement('button'); del.className='i-btn btn-sm'; del.textContent='حذف'; del.onclick=()=>{ if(confirm('آیا از حذف این مورد مطمئن هستید؟')){ inventory.gold.splice(idx,1); save(); renderGold(); renderDaily(); showToast('آیتم حذف شد'); } };
-    actions.append(edit, del);
-    row.append(left, actions); wrap.append(row); });
+  const actions=document.createElement('div'); actions.className='item-actions';
+  const edit=document.createElement('button'); edit.className='i-btn btn-sm'; edit.setAttribute('title','ویرایش'); edit.setAttribute('aria-label','ویرایش آیتم'); edit.innerHTML='<span aria-hidden="true">✎</span> ویرایش'; edit.onclick=()=>{ editGold(idx); };
+  const del=document.createElement('button'); del.className='i-btn btn-sm'; del.setAttribute('title','حذف'); del.setAttribute('aria-label','حذف آیتم'); del.innerHTML='<span aria-hidden="true">✕</span> حذف'; del.onclick=()=>{ if(confirm('آیا از حذف این مورد مطمئن هستید؟')){ inventory.gold.splice(idx,1); save(); renderGold(); renderDaily(); showToast('آیتم حذف شد'); } };
+  actions.append(edit, del);
+  row.append(left, actions); wrap.append(row); });
 }
 
 function editGold(idx){ const it=inventory.gold[idx]; if(!it) return; const newK = prompt('عیار را وارد کنید:', it.karat); if(newK===null) return; const rawW = prompt('وزن (گرم) را وارد کنید (مثال: 12.500):', (Number(it.weightMg)/1000).toFixed(3)); if(rawW===null) return; const w = parseFloat(normalizeNumInput(rawW)); if(isNaN(w) || w<=0) return alert('وزن معتبر نیست'); it.karat = newK.trim(); it.weightMg = Math.round(w*1000); save(); renderGold(); renderDaily(); showToast('آیتم ویرایش شد'); }
@@ -490,11 +493,11 @@ function renderCoin(){ const wrap=document.getElementById('coin-items-list'); wr
   if(!(inventory.coins||[]).length){ wrap.innerHTML='<div class="muted-text">هنوز آیتمی ثبت نشده</div>'; return; }
   (inventory.coins||[]).forEach((it, idx)=>{ const row=document.createElement('div'); row.className='item';
     const left=document.createElement('div'); left.innerHTML=`<b>${it.type} – ${it.count} عدد</b><div class="meta">${it.date?isoToJalali(it.date):'بدون تاریخ'}</div>`;
-    const actions=document.createElement('div');
-    const edit=document.createElement('button'); edit.className='i-btn btn-sm'; edit.textContent='ویرایش'; edit.onclick=()=>{ editCoin(idx); };
-    const del=document.createElement('button'); del.className='i-btn btn-sm'; del.textContent='حذف'; del.onclick=()=>{ if(confirm('آیا از حذف این مورد مطمئن هستید؟')){ inventory.coins.splice(idx,1); save(); renderCoin(); renderDaily(); showToast('آیتم حذف شد'); } };
-    actions.append(edit, del);
-    row.append(left, actions); wrap.append(row); });
+  const actions=document.createElement('div'); actions.className='item-actions';
+  const edit=document.createElement('button'); edit.className='i-btn btn-sm'; edit.setAttribute('title','ویرایش'); edit.setAttribute('aria-label','ویرایش سکه'); edit.innerHTML='<span aria-hidden="true">✎</span> ویرایش'; edit.onclick=()=>{ editCoin(idx); };
+  const del=document.createElement('button'); del.className='i-btn btn-sm'; del.setAttribute('title','حذف'); del.setAttribute('aria-label','حذف سکه'); del.innerHTML='<span aria-hidden="true">✕</span> حذف'; del.onclick=()=>{ if(confirm('آیا از حذف این مورد مطمئن هستید؟')){ inventory.coins.splice(idx,1); save(); renderCoin(); renderDaily(); showToast('آیتم حذف شد'); } };
+  actions.append(edit, del);
+  row.append(left, actions); wrap.append(row); });
 }
 
 function editCoin(idx){ const it=inventory.coins[idx]; if(!it) return; const newType = prompt('نوع سکه را وارد کنید:', it.type); if(newType===null) return; const rawC = prompt('تعداد را وارد کنید:', String(it.count)); if(rawC===null) return; const c = parseInt(normalizeNumInput(rawC).replace(/\./g,''),10); if(isNaN(c) || c<=0) return alert('تعداد معتبر نیست'); it.type = newType.trim(); it.count = c; save(); renderCoin(); renderDaily(); showToast('آیتم ویرایش شد'); }
@@ -573,11 +576,11 @@ function renderBank(){ const wrap=document.getElementById('bank-cards-list'); wr
     left.innerHTML=`<b>${it.name}</b>
       <div class="meta">${it.cardNumber?('کارت: '+it.cardNumber+' – '):''}${it.date?isoToJalali(it.date):'بدون تاریخ'} | <b>${String(it.amount).replace(/\B(?=(\d{3})+(?!\d))/g,',')} ریال</b></div>
       <div class="thumb-wrap">${thumbs||''}</div>`;
-    const actions=document.createElement('div');
-    const edit=document.createElement('button'); edit.className='i-btn btn-sm'; edit.textContent='ویرایش'; edit.onclick=()=>{ editBank(idx); };
-    const del=document.createElement('button'); del.className='i-btn btn-sm'; del.textContent='حذف'; del.onclick=()=>{ if(confirm('آیا از حذف این رکورد بانکی مطمئن هستید؟')){ inventory.banks.splice(idx,1); save(); renderBank(); renderDaily(); showToast('رکورد حذف شد'); } };
-    actions.append(edit, del);
-    row.append(left, actions); wrap.append(row);
+  const actions=document.createElement('div'); actions.className='item-actions';
+  const edit=document.createElement('button'); edit.className='i-btn btn-sm'; edit.setAttribute('title','ویرایش'); edit.setAttribute('aria-label','ویرایش رکورد بانکی'); edit.innerHTML='<span aria-hidden="true">✎</span> ویرایش'; edit.onclick=()=>{ editBank(idx); };
+  const del=document.createElement('button'); del.className='i-btn btn-sm'; del.setAttribute('title','حذف'); del.setAttribute('aria-label','حذف رکورد بانکی'); del.innerHTML='<span aria-hidden="true">✕</span> حذف'; del.onclick=()=>{ if(confirm('آیا از حذف این رکورد بانکی مطمئن هستید؟')){ inventory.banks.splice(idx,1); save(); renderBank(); renderDaily(); showToast('رکورد حذف شد'); } };
+  actions.append(edit, del);
+  row.append(left, actions); wrap.append(row);
   });
   wrap.querySelectorAll('img.thumb').forEach(img=>img.addEventListener('click',()=>openViewer(img.src)));
 }
