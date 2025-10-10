@@ -7,8 +7,6 @@
 <meta name="theme-color" content="#D4AF37">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
-  <input id="file-upload" type="file" accept="image/*" class="d-none">
-  <input id="file-camera" type="file" accept="image/*" class="d-none">
   <style>
   .container{padding:12px}
   .card{padding:14px}
@@ -373,6 +371,8 @@
         @media(max-width:760px){ .dec-btn{display:inline-flex;z-index:6;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.06)} }
     </style>
   <script>
+  function escapeHTML(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+
   function applyDate(iso){
   const prev=document.getElementById('date-preview'); const wt=document.getElementById('weekday-badge'); const pt=document.getElementById('preview-text');
   if(prev){ prev.style.display='flex'; wt.textContent=weekdayFaFromISO(iso); pt.textContent=isoToJalali(iso)+' ('+iso+')'; }
@@ -481,14 +481,14 @@ function openRecordModal(type, index){
   } else if(type==='coin'){
     const it = inventory.coins[index];
     modalBody.innerHTML = `
-      <label>نوع سکه<input class="input" id="modal-coin-type" value="${it.type}"></label>
+      <label>نوع سکه<input class="input" id="modal-coin-type" value="${escapeHTML(it.type)}"></label>
       <label class="form-row">تعداد<input class="input" id="modal-coin-count" inputmode="numeric" value="${it.count}"></label>
     `;
   } else if(type==='bank'){
     const it = inventory.banks[index];
     modalBody.innerHTML = `
-      <label>نام بانک<input class="input" id="modal-bank-name" value="${it.name}"></label>
-      <label class="form-row">شماره کارت<input class="input" id="modal-bank-card" inputmode="numeric" value="${it.cardNumber||''}"></label>
+      <label>نام بانک<input class="input" id="modal-bank-name" value="${escapeHTML(it.name)}"></label>
+      <label class="form-row">شماره کارت<input class="input" id="modal-bank-card" inputmode="numeric" value="${it.cardNumber?escapeHTML(it.cardNumber):''}"></label>
       <label class="form-row">مبلغ (ریال)<input class="input" id="modal-bank-amount" inputmode="numeric" value="${it.amount}"></label>
     `;
   }
@@ -530,7 +530,7 @@ function editBank(idx){ if(!inventory.banks[idx]) return; openRecordModal('bank'
 function renderCoin(){ const wrap=document.getElementById('coin-items-list'); wrap.textContent='';
   if(!(inventory.coins||[]).length){ wrap.innerHTML='<div class="muted-text">هنوز آیتمی ثبت نشده</div>'; return; }
   (inventory.coins||[]).forEach((it, idx)=>{ const row=document.createElement('div'); row.className='item';
-    const left=document.createElement('div'); left.innerHTML=`<b>${it.type} – ${it.count} عدد</b><div class="meta">${it.date?isoToJalali(it.date):'بدون تاریخ'}</div>`;
+    const left=document.createElement('div'); left.innerHTML=`<b>${escapeHTML(it.type)} – ${it.count} عدد</b><div class="meta">${it.date?isoToJalali(it.date):'بدون تاریخ'}</div>`;
   const actions=document.createElement('div'); actions.className='item-actions';
   const edit=document.createElement('button'); edit.className='i-btn btn-sm'; edit.setAttribute('title','ویرایش'); edit.setAttribute('aria-label','ویرایش سکه'); edit.innerHTML='<span aria-hidden="true">✎</span> ویرایش'; edit.onclick=()=>{ editCoin(idx); };
   const del=document.createElement('button'); del.className='i-btn btn-sm'; del.setAttribute('title','حذف'); del.setAttribute('aria-label','حذف سکه'); del.innerHTML='<span aria-hidden="true">✕</span> حذف'; del.onclick=()=>{ if(confirm('آیا از حذف این مورد مطمئن هستید؟')){ inventory.coins.splice(idx,1); save(); renderCoin(); renderDaily(); showToast('آیتم حذف شد'); } };
@@ -611,8 +611,8 @@ function renderBank(){ const wrap=document.getElementById('bank-cards-list'); wr
     const row=document.createElement('div'); row.className='item';
     const left=document.createElement('div');
     let thumbs=''; (it.photos||[]).forEach((p,pi)=>{ thumbs+=`<img src="${p}" alt="photo ${pi+1}" class="thumb thumb-offset">`; });
-    left.innerHTML=`<b>${it.name}</b>
-      <div class="meta">${it.cardNumber?('کارت: '+it.cardNumber+' – '):''}${it.date?isoToJalali(it.date):'بدون تاریخ'} | <b>${String(it.amount).replace(/\B(?=(\d{3})+(?!\d))/g,',')} ریال</b></div>
+    left.innerHTML=`<b>${escapeHTML(it.name)}</b>
+      <div class="meta">${it.cardNumber?('کارت: '+escapeHTML(it.cardNumber)+' – '):''}${it.date?isoToJalali(it.date):'بدون تاریخ'} | <b>${String(it.amount).replace(/\B(?=(\d{3})+(?!\d))/g,',')} ریال</b></div>
       <div class="thumb-wrap">${thumbs||''}</div>`;
   const actions=document.createElement('div'); actions.className='item-actions';
   const edit=document.createElement('button'); edit.className='i-btn btn-sm'; edit.setAttribute('title','ویرایش'); edit.setAttribute('aria-label','ویرایش رکورد بانکی'); edit.innerHTML='<span aria-hidden="true">✎</span> ویرایش'; edit.onclick=()=>{ editBank(idx); };
